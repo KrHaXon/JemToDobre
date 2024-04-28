@@ -1,0 +1,28 @@
+package com.JemToDobre.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import com.JemToDobre.model.toenum.RodzajUzytkownika;
+import java.math.BigDecimal;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+
+public class Uzytkownicy {
+    @Id
+    @GeneratedValue
+    private Long ID_Uzytkownik;
+    private String Nazwa_Uzytkownika;
+    private String Email;
+    private String Haslo;
+    private String Telefon;
+    private RodzajUzytkownika Typ_Uzytkownika;
+}

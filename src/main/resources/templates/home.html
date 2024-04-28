@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JemToDobre</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<header>
+    <h1>Witaj w Japońskiej Restauracji</h1>
+    <p>Zapraszamy na kulinarne podróże do Japonii!</p>
+</header>
+<nav>
+    <div class="login-register">
+        <a href="login">Zaloguj</a>
+        <a href="register">Zarejestruj</a>
+    </div>
+    <a href="#">Menu</a>
+    <a href="#">O nas</a>
+    <a href="#">Kontakt</a>
+</nav>
+<section>
+    <h2>Nasze Specjały</h2>
+    <div class="gallery">
+        <img src="sushi.jpg" alt="Sushi">
+        <img src="ramen.jpg" alt="Ramen">
+        <img src="sashimi.jpg" alt="Sashimi">
+    </div>
+    <p>W naszej restauracji serwujemy tradycyjne japońskie potrawy, takie jak sushi, sashimi, ramen i wiele innych.</p>
+    <p>Zapraszamy do spróbowania naszych pyszności!</p>
+</section>
+<section id="about">
+    <h2>O Nas</h2>
+    <p>Nasza restauracja specjalizuje się w autentycznych japońskich smakach, serwowanych w przyjemnej atmosferze.</p>
+    <p>Nasi kucharze posiadają wieloletnie doświadczenie w przygotowywaniu tradycyjnych potraw, aby zapewnić naszym gościom najlepszą jakość i smak.</p>
+</section>
+<section id="contact">
+    <h2>Kontakt</h2>
+    <p>Zapraszamy do odwiedzenia naszej restauracji!</p>
+    <p>Adres: ul. Sushi 123, 00-000 Katowice</p>
+    <p>Telefon: 123-456-789</p>
+    <p>Email: info@Jem-ToDobre.com</p>
+    <form action="send_message.php" method="post">
+        <label for="name">Imię i Nazwisko:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="message">Wiadomość:</label><br>
+        <textarea id="message" name="message" rows="4" required></textarea><br>
+        <button type="submit">Wyślij</button>
+    </form>
+</section>
+<footer>
+    <p>&copy; 2024 Jem-ToDobre. Wszelkie prawa zastrzeżone.</p>
+</footer>
+</body>
+</html>

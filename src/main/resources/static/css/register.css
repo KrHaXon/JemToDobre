@@ -1,0 +1,104 @@
+*{
+    font-family: Open Sans;
+}
+
+a:link {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:active {
+    color: #fff;
+    text-decoration: none;
+}
+
+body{
+    background: linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,1)),url("img/wallpaperlogin.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.box{
+    min-height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+
+}
+
+span{
+    color: #fff;
+    font-size: small;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+
+header{
+    color: #fff;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 10px 0;
+}
+
+.input-field{
+    margin-top: 11px;
+}
+
+.input-field .input{
+    height: 45px;
+    width: 88%;
+    border: none;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 15px;
+    padding: 0 0 0 45px;
+    background: rgba(255,255,255,0.1);
+    outline: none;
+}
+
+.input-field .input:hover{
+    background: rgba(255,255,255,0.2);
+}
+
+::-webkit-input-placeholder{
+    color: #fff;				/* zmiana koloru w inputach  */
+}
+
+.submit{
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    height: 45px;
+    outline: none;
+    width: 100%;
+    color: black;
+    background: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: .3s ;
+}
+
+.submit:hover{
+    box-shadow: 1px 5px 5px 1px rgba(0, 0, 0, 0.3);
+}

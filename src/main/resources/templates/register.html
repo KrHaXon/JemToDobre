@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <title>Registration</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/register.css">
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Registration</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" th:action="@{/register}">
+                        <div class="form-group">
+                            <label for="nick">Nickname:</label>
+                            <input type="text" class="form-control" id="nick" name="nick" th:value="${session['fr_nick']}" required>
+                            <div class="error" th:if="${session['e_nick']}" th:text="${session['e_nick']}"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" class="form-control" id="email" name="email" th:value="${session['fr_email']}" required>
+                            <div class="error" th:if="${session['e_email']}" th:text="${session['e_email']}"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="haslo1">Password:</label>
+                            <input type="password" class="form-control" id="haslo1" name="haslo1" th:value="${session['fr_haslo1']}" required>
+                            <div class="error" th:if="${session['e_haslo']}" th:text="${session['e_haslo']}"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="haslo2">Repeat password:</label>
+                            <input type="password" class="form-control" id="haslo2" name="haslo2" th:value="${session['fr_haslo2']}" required>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="regulamin" name="regulamin" th:checked="${session['fr_regulamin']}">
+                            <label class="form-check-label" for="regulamin">Accept</label>
+                            <div class="error" th:if="${session['e_regulamin']}" th:text="${session['e_regulamin']}"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

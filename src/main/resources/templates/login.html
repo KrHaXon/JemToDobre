@@ -4,16 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logowanie</title>
-    <link rel="stylesheet" type="text/css" href="/css/register.css">
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
 </head>
 <body>
-<h2>Logowanie</h2>
-<form action="/login" method="post">
-    <label for="login">Login:</label><br>
-    <input type="text" id="login" name="login"><br>
-    <label for="haslo">Hasło:</label><br>
-    <input type="password" id="haslo" name="haslo"><br><br>
-    <input type="submit" value="Zaloguj">
-</form>
+<div class="container">
+    <img src="../img/logo.png">
+    <h2>Logowanie</h2>
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input type="text" id="login" name="login" placeholder="Login">
+        </div>
+        <div class="form-group">
+            <input type="password" id="password" name="password" placeholder="Hasło">
+        </div>
+        <div class="form-group checkbox-group">
+            <label class="toggle" style="margin-right: 8px;">
+                <input type="checkbox" class="toggle-checkbox">
+                <span class="toggle-slider"></span>
+            </label>
+            <label style="margin-left: 0;">Zapamiętaj mnie</label>
+            <label><a href="#">Zapomniałeś hasła</a></label>
+        </div>
+        <div class="form-group">
+            <button type="submit">Zaloguj</button>
+        </div>
+        <div class="form-group">
+            <a href="#">Utwórz konto</a></br></br>
+        </div>
+    </form>
+</div>
 </body>
 </html>

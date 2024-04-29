@@ -2,6 +2,7 @@ package com.JemToDobre.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 @Entity
 public class Pozycje_Menu {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID_Pozycja_Menu;
     private Integer ID_Kategoria;
     private Integer ID_Alergen;

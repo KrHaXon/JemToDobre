@@ -1,9 +1,6 @@
 package com.JemToDobre.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +13,20 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-
+@Table(name="Uzytkownicy")
 public class Uzytkownicy {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long ID_Uzytkownik;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int ID_Uzytkownik;
     private String Nazwa_Uzytkownika;
     private String Email;
     private String Haslo;
     private String Telefon;
     private RodzajUzytkownika Typ_Uzytkownika;
+    public Uzytkownicy(String name, String email, String password)
+    {
+        this.Nazwa_Uzytkownika = name;
+        this.Email = email;
+        this.Haslo = password;
+    }
 }

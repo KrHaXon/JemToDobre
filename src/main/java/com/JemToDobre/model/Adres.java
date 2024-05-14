@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 public class Adres {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID_Adres;
     private String Ulica;
     private Integer Nr_Domu;

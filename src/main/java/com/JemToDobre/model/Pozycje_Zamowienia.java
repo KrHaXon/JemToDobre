@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @Entity
 public class Pozycje_Zamowienia {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID_Pozycja_Zamowienia;
     private Integer ID_Zamowienia;
     private Integer ID_Pozycji;

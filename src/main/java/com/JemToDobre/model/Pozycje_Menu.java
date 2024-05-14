@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @Entity
 public class Pozycje_Menu {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID_Pozycja_Menu;
     private Integer ID_Kategoria;
     private Integer ID_Alergen;

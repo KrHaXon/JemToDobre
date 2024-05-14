@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 public class Alergeny {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long ID_Alergen;
     private String Nazwa_Alergenu;

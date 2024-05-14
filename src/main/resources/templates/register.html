@@ -17,7 +17,7 @@
                     <h3 class="text-center">Registration</h3>
                 </div>
                 <div class="card-body">
-                    <form method="post" th:action="@{/register}">
+                    <form method="post" th:action="@{/register-submit}">
                         <div class="form-group">
                             <label for="nick">Nickname:</label>
                             <input type="text" class="form-control" id="nick" name="nick" th:value="${session['fr_nick']}" required>

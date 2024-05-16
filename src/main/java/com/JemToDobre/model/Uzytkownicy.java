@@ -23,10 +23,11 @@ public class Uzytkownicy {
     private String Haslo;
     private String Telefon;
     private RodzajUzytkownika Typ_Uzytkownika;
-    public Uzytkownicy(String name, String email, String password)
+    public Uzytkownicy(String name, String email, String password, String phone)
     {
         this.Nazwa_Uzytkownika = name;
         this.Email = email;
         this.Haslo = password;
+        this.Telefon = phone;
     }
 }

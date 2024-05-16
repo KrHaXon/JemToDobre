@@ -1,53 +1,46 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <title>Registration</title>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/register.css">
+    <title>Rejestracja</title>
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
 </head>
 <body>
 <div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Registration</h3>
-                </div>
-                <div class="card-body">
-                    <form method="post" th:action="@{/register-submit}">
-                        <div class="form-group">
-                            <label for="nick">Nickname:</label>
-                            <input type="text" class="form-control" id="nick" name="nick" th:value="${session['fr_nick']}" required>
-                            <div class="error" th:if="${session['e_nick']}" th:text="${session['e_nick']}"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">E-mail:</label>
-                            <input type="email" class="form-control" id="email" name="email" th:value="${session['fr_email']}" required>
-                            <div class="error" th:if="${session['e_email']}" th:text="${session['e_email']}"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="haslo1">Password:</label>
-                            <input type="password" class="form-control" id="haslo1" name="haslo1" th:value="${session['fr_haslo1']}" required>
-                            <div class="error" th:if="${session['e_haslo']}" th:text="${session['e_haslo']}"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="haslo2">Repeat password:</label>
-                            <input type="password" class="form-control" id="haslo2" name="haslo2" th:value="${session['fr_haslo2']}" required>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="regulamin" name="regulamin" th:checked="${session['fr_regulamin']}">
-                            <label class="form-check-label" for="regulamin">Accept</label>
-                            <div class="error" th:if="${session['e_regulamin']}" th:text="${session['e_regulamin']}"></div>
-                        </div>
-                        <br>
-                        <button type="submit" class="btn btn-primary mt-3">Sign Up</button>
-                    </form>
-                </div>
-            </div>
+    <img src="css/logo.png">
+    <h2>Rejestracja</h2>
+    <form form method="post" th:action="@{/register-submit}">
+
+        <div class="form-group">
+            <input type="text" class="form-control" id="nick" name="nick" th:value="${session['fr_nick']}" required placeholder="Nazwa">
         </div>
-    </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" name="email" th:value="${session['fr_email']}" required placeholder="Email">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="haslo1" name="haslo1" th:value="${session['fr_haslo1']}" required placeholder="Hasło">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="haslo2" name="haslo2" th:value="${session['fr_haslo2']}" required placeholder="Powtórz hasło">
+        </div>
+        <div class="form-group">
+            <input type="number" class="form-control" id="phone" name="phone" th:value="${session['fr_phone']}" required placeholder="Telefon">
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label class="toggle" style="margin-right: 8px;">
+                <input type="checkbox" class="toggle-checkbox">
+                <span class="toggle-slider"></span>
+            </label>
+            <label style="margin-left: 0;">Zapamiętaj mnie</label>
+            <input type="checkbox" class="form-check-input" id="regulamin" name="regulamin" th:checked="${session['fr_regulamin']}">
+            <label class="form-check-label" for="regulamin" style="margin-left: 0;">Akceptuję regulamin</label>
+        </div>
+        <div class="form-group">
+            <button type="submit">Zarejestruj</button>
+        </div>
+    </form>
 </div>
 </body>
 </html>

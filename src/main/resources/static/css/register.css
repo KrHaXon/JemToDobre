@@ -1,104 +1,108 @@
-*{
+body {
     font-family: Open Sans;
-}
-
-a:link {
-    color: #fff;
-    text-decoration: none;
-}
-
-a:visited {
-    color: #fff;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #fff;
-    text-decoration: none;
-}
-
-a:active {
-    color: #fff;
-    text-decoration: none;
-}
-
-body{
-    background: linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,1)),url("img/wallpaperlogin.jpg");
-    background-size: cover;
-    background-position: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url("logo2.png");
     background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-.box{
-    min-height: 60vh;
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.container{
-    width: 800px;
-    display: flex;
-    flex-direction: column;
-    padding: 0 15px;
-
+.container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    text-align: center;
+    padding: 20px;
 }
 
-span{
-    color: #fff;
-    font-size: small;
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
+.card {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    margin-top: 20px;
+}
+
+.card-header {
+    background-color: black;
+    color: #ffffff;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: black;
+    border-color: black;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: black;
+    border-color: black;
+}
+
+.form-check-input {
+    margin-top: 0.25rem;
+}
+
+.form-check-label {
+    margin-left: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
     margin-top: 10px;
 }
 
-header{
-    color: #fff;
-    font-size: 30px;
+.checkbox-group {
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 10px 0 10px 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.input-field{
-    margin-top: 11px;
+.checkbox-group label {
+    display: inline-block;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
-.input-field .input{
-    height: 45px;
-    width: 88%;
-    border: none;
-    border-radius: 30px;
-    color: #fff;
-    font-size: 15px;
-    padding: 0 0 0 45px;
-    background: rgba(255,255,255,0.1);
-    outline: none;
+.checkbox-group label:first-child {
+    margin-left: 0;
 }
 
-.input-field .input:hover{
-    background: rgba(255,255,255,0.2);
-}
-
-::-webkit-input-placeholder{
-    color: #fff;				/* zmiana koloru w inputach  */
-}
-
-.submit{
-    border: none;
-    border-radius: 30px;
-    font-size: 15px;
-    height: 45px;
-    outline: none;
-    width: 100%;
-    color: black;
-    background: rgba(255,255,255,0.7);
-    cursor: pointer;
-    transition: .3s ;
-}
-
-.submit:hover{
-    box-shadow: 1px 5px 5px 1px rgba(0, 0, 0, 0.3);
+.checkbox-group label:last-child {
+    margin-right: 0;
 }

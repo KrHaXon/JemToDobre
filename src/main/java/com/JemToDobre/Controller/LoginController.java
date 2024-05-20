@@ -37,9 +37,11 @@ public class LoginController {
                         @RequestParam("password") String password,
                         HttpSession session, Model model)
     {
+        //boolean isLoggedIn = false;
         Optional<Uzytkownicy> optionalUser = uzytkownicyRepository.findUserByUsername(username);
         if (optionalUser.isPresent())
         {
+           // isLoggedIn = true;
             Uzytkownicy uzytkownicy = optionalUser.get();
             //String hashedPassword = uzytkownicy.getPassword();
             //if (passwordMatches(password, hashedPassword)) {
@@ -48,6 +50,7 @@ public class LoginController {
             System.out.println("Logged in user: " + session.getAttribute("loggedInUser"));
             System.out.println(password);
             model.addAttribute("Uzytkownicy", uzytkownicy);
+            model.addAttribute("isLoggedIn", true);
             return "redirect:/";
         }
         else {
@@ -55,11 +58,11 @@ public class LoginController {
             return "login";
         }
     }
-    /*@GetMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session)
     {
         session.removeAttribute("loggedInUser");
-        session.removeAttribute("role");
+        //session.removeAttribute("role");
         return "home";
     }
     /*private boolean passwordMatches(String inputPassword, String hashedPassword) {

@@ -16,7 +16,7 @@ public class PozycjeMenuService {
         return pozycjeMenuRepository.findAll();
     }
 
-    public Pozycje_Menu findById(Long id) {
+    public Pozycje_Menu findById(Integer id) {
         return pozycjeMenuRepository.findById(id).orElse(null);
     }
 
@@ -24,7 +24,7 @@ public class PozycjeMenuService {
         pozycjeMenuRepository.save(pozycjeMenu);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         pozycjeMenuRepository.deleteById(id);
     }
 }

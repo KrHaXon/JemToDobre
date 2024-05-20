@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,7 +17,18 @@ import java.math.BigDecimal;
 public class Kategoria_Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID_Kategoria;
+    private Integer ID_Kategoria;
     private String Nazwa_Kategorii;
 
+    public Kategoria_Menu(String nazwa_Kategorii) {
+        Nazwa_Kategorii = nazwa_Kategorii;
+    }
+
+    @Override
+    public String toString() {
+        return "Kategoria_Menu{" +
+                "ID_Kategoria=" + ID_Kategoria +
+                ", Nazwa_Kategorii='" + Nazwa_Kategorii + '\'' +
+                '}';
+    }
 }

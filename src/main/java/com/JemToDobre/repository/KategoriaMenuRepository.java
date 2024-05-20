@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface KategoriaMenuRepository extends JpaRepository<Kategoria_Menu, Long> {
+public interface KategoriaMenuRepository extends JpaRepository<Kategoria_Menu, Integer> {
 }

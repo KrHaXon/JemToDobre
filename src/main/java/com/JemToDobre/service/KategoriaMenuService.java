@@ -16,7 +16,7 @@ public class KategoriaMenuService {
         return kategoriaMenuRepository.findAll();
     }
 
-    public Kategoria_Menu findById(Long id) {
+    public Kategoria_Menu findById(Integer id) {
         return kategoriaMenuRepository.findById(id).orElse(null);
     }
 
@@ -24,7 +24,7 @@ public class KategoriaMenuService {
         kategoriaMenuRepository.save(kategoriaMenu);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Integer id) {
         kategoriaMenuRepository.deleteById(id);
     }
 }

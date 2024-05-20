@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<body>
+<h1>Cart</h1>
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+    </tr>
+    <tr th:each="item : ${zamowienie.pozycjeZamowienia}">
+        <td th:text="${item.ID_Pozycji}">Item Name</td>
+        <td th:text="${item.ilosc}">0</td>
+        <td th:text="${item.cena * item.ilosc}">0.00</td>
+    </tr>
+</table>
+<p>Total Price: <span th:text="${zamowienie.lacznaCena}">0.00</span></p>
+<a href="/menu">Back to Menu</a>
+</body>
+</html>

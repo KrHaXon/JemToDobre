@@ -51,6 +51,7 @@ public class LoginController {
             System.out.println(password);
             model.addAttribute("Uzytkownicy", uzytkownicy);
             model.addAttribute("isLoggedIn", true);
+            System.out.println("isLoggedIn: " + model.getAttribute("isLoggedIn"));
             return "redirect:/";
         }
         else {
@@ -59,11 +60,13 @@ public class LoginController {
         }
     }
     @GetMapping("/logout")
-    public String logout(HttpSession session)
+    public String logout(HttpSession session, Model model)
     {
         session.removeAttribute("loggedInUser");
+        //session.invalidate();
         //session.removeAttribute("role");
-        return "home";
+        model.addAttribute("isLoggedIn", false);
+        return "redirect:/";
     }
     /*private boolean passwordMatches(String inputPassword, String hashedPassword) {
 

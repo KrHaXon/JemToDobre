@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,9 +22,13 @@
         <a href="#">Zamów teraz</a>
     </div>
     <div class="login-register" id="loginRegisterLinks">
+        <a th:if="${isLoggedIn}" href="logout">Wyloguj</a>
+        <a th:unless="${isLoggedIn}" href="login">Zaloguj</a>
+        <a th:unless="${isLoggedIn}" href="register">Zarejestruj</a>
     </div>
 </nav>
 <section class="first-section">
+    <p th:text="'isLoggedIn value: ' + ${isLoggedIn}"></p>
     <h2>Nasze Specjały</h2>
     <div class="gallery">
         <img src="css/sushi.png" alt="Sushi">
@@ -170,38 +174,6 @@
 
 
 </script>
-<script>
-    let isLoggedIn = 1;
-    function updateNavigation() {
-        let loginRegisterLinks = document.getElementById("loginRegisterLinks");
 
-        // Usunięcie istniejących elementów nawigacji
-        loginRegisterLinks.innerHTML = "";
-
-        // Sprawdzenie stanu zalogowania
-        if (isLoggedIn) {
-            // Użytkownik jest zalogowany, więc wyświetlamy przycisk "Wyloguj"
-            let logoutButton = document.createElement("a");
-            logoutButton.href = "logout";
-            logoutButton.textContent = "Wyloguj";
-            loginRegisterLinks.appendChild(logoutButton);
-        } else {
-            // Użytkownik nie jest zalogowany, więc wyświetlamy przyciski "Zaloguj" i "Zarejestruj"
-            let loginButton = document.createElement("a");
-            loginButton.href = "login";
-            loginButton.textContent = "Zaloguj";
-
-            let registerButton = document.createElement("a");
-            registerButton.href = "register";
-            registerButton.textContent = "Zarejestruj";
-
-            loginRegisterLinks.appendChild(loginButton);
-            loginRegisterLinks.appendChild(registerButton);
-        }
-    }
-
-    // Wywołanie funkcji po załadowaniu strony, aby zainicjować nawigację
-    updateNavigation();
-</script>
 </body>
 </html>

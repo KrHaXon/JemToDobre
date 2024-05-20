@@ -1,16 +1,73 @@
 package com.JemToDobre.Controller;
 
+
+import com.JemToDobre.model.Uzytkownicy;
+import com.JemToDobre.repository.UzytkownicyRepository;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
+
 
 @Controller
-@SessionAttributes({"zalogowany", "id", "user", "email", "role", "blad"})
 public class LoginController {
-    @PostMapping("/login")
+    private final UzytkownicyRepository uzytkownicyRepository;
+
+    public LoginController(UzytkownicyRepository uzytkownicyRepository)
+    {
+        this.uzytkownicyRepository = uzytkownicyRepository;
+    }
+    /*@PostMapping("/login-submit")
+    public String login(@RequestBody LoginDto loginDto)
+    {
+        //LoginResponse loginMessage = uzytkownicyService.Login(loginDto);
+        //System.out.println(loginMessage);
+        System.out.println(loginDto.getEmail());
+        System.out.println(loginDto.getPassword());
+        return "redirect:/";
+    }*/
+
+    @PostMapping("/login-submit")
+    public String login(@RequestParam("login") String username,
+                        @RequestParam("password") String password,
+                        HttpSession session, Model model)
+    {
+        Optional<Uzytkownicy> optionalUser = uzytkownicyRepository.findUserByUsername(username);
+        if (optionalUser.isPresent())
+        {
+            Uzytkownicy uzytkownicy = optionalUser.get();
+            //String hashedPassword = uzytkownicy.getPassword();
+            //if (passwordMatches(password, hashedPassword)) {
+            session.setAttribute("loggedInUser", uzytkownicy);
+            //session.setAttribute("role", uzytkownicy.getTyp_Uzytkownika().name());
+            System.out.println("Logged in user: " + session.getAttribute("loggedInUser"));
+            System.out.println(password);
+            model.addAttribute("Uzytkownicy", uzytkownicy);
+            return "redirect:/";
+        }
+        else {
+            model.addAttribute("error", "Nieprawidłowa nazwa użytkownika lub hasło!");
+            return "login";
+        }
+    }
+    /*@GetMapping("/logout")
+    public String logout(HttpSession session)
+    {
+        session.removeAttribute("loggedInUser");
+        session.removeAttribute("role");
+        return "home";
+    }
+    /*private boolean passwordMatches(String inputPassword, String hashedPassword) {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(inputPassword, hashedPassword);
+    }*/
+    /*@PostMapping("/login")
     public String login(@RequestParam("login") String login,
                         @RequestParam("haslo") String haslo,
                         Model model) {
@@ -31,10 +88,11 @@ public class LoginController {
             model.addAttribute("blad", "Błąd serwera! Spróbuj ponownie później.");
             return "redirect:/login"; // Przekierowanie do strony logowania w przypadku błędu
         }
-    }
+    }*/
 
-    @PostMapping("/register")
-    public String rejestracja() {
-        return "register";
-    }
+    //@PostMapping("/register")
+    //public String rejestracja() {
+    //return "register";
+    // }
+
 }

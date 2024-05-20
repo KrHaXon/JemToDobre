@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Lista Pozycji Menu</title>
+</head>
+<body>
+<h1>Lista Pozycji Menu</h1>
+<a href="/admin/pozycja/new">Dodaj Pozycję</a>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nazwa</th>
+        <th>Kategoria</th>
+        <th>Akcje</th>
+    </tr>
+    <tr th:each="pozycja : ${pozycje}">
+        <td th:text="${pozycja.ID_Pozycja}">1</td>
+        <td th:text="${pozycja.Nazwa_Pozycji}">Nazwa</td>
+        <td th:text="${pozycja.kategoria.Nazwa_Kategorii}">Kategoria</td>
+        <td>
+            <a th:href="@{/admin/pozycja/edit/{id}(id=${pozycja.ID_Pozycja})}">Edytuj</a>
+            <a th:href="@{/admin/pozycja/delete/{id}(id=${pozycja.ID_Pozycja})}">Usuń</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

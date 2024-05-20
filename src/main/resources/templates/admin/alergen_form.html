@@ -7,15 +7,15 @@
 <body>
 <h1>Dodaj/Edytuj Alergen</h1>
 <form th:action="@{/admin/alergen}" th:object="${alergen}" method="post">
-    <input type="hidden" th:field="*{ID_Alergen}" />
+    <input type="hidden" th:value="${ID_Alergen}" />
     <label for="nazwa">Nazwa:</label>
-    <input type="text" id="nazwa" th:field="${Nazwa_Alergenu}" required />
+    <input type="text" id="nazwa" th:value="${Nazwa_Alergenu}" required />
     <label for="opis">Opis:</label>
-    <input type="text" id="opis" th:field="${Opis_Alergenu}" required />
+    <input type="text" id="opis" th:value="${Opis_Alergenu}" required />
     <label for="typ">Typ:</label>
-    <input type="text" id="typ" th:field="${Typ_Alergenu}" required />
+    <input type="text" id="typ" th:value="${Typ_Alergenu}" required />
     <label for="zrodlo">Źródło:</label>
-    <input type="text" id="zrodlo" th:field="${Zrodlo_Alergenu}" required />
+    <input type="text" id="zrodlo" th:value="${Zrodlo_Alergenu}" required />
     <button type="submit">Zapisz</button>
     <button type="button" onclick="window.location.href='/admin/alergeny'">Anuluj</button>
 </form>

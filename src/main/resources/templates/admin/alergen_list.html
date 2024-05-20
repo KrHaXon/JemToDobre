@@ -11,17 +11,11 @@
     <tr>
         <th>ID</th>
         <th>Nazwa</th>
-        <th>Opis</th>
-        <th>Typ</th>
-        <th>Źródło</th>
         <th>Akcje</th>
     </tr>
     <tr th:each="alergen : ${alergeny}">
         <td th:text="${alergen.ID_Alergen}">1</td>
         <td th:text="${alergen.Nazwa_Alergenu}">Nazwa</td>
-        <td th:text="${alergen.Opis_Alergenu}">Opis</td>
-        <td th:text="${alergen.Typ_Alergenu}">Typ</td>
-        <td th:text="${alergen.Zrodlo_Alergenu}">Źródło</td>
         <td>
             <a th:href="@{/admin/alergen/edit/{id}(id=${alergen.ID_Alergen})}">Edytuj</a>
             <a th:href="@{/admin/alergen/delete/{id}(id=${alergen.ID_Alergen})}">Usuń</a>

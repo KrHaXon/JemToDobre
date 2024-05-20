@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Dodaj/Edytuj Kategorię</title>
+</head>
+<body>
+<h1>Dodaj/Edytuj Kategorię</h1>
+<form th:action="@{/admin/kategoria}" th:object="${kategoria}" method="post">
+    <input type="hidden" th:value="${ID_Kategoria}" />
+    <label for="nazwa">Nazwa:</label>
+    <input type="text" id="nazwa" th:value="${Nazwa_Kategorii}" required />
+    <button type="submit">Zapisz</button>
+    <button type="button" onclick="window.location.href='/admin/kategorie'">Anuluj</button>
+</form>
+</body>
+</html>

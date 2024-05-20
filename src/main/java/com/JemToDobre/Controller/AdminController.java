@@ -3,6 +3,7 @@ package com.JemToDobre.Controller;
 import com.JemToDobre.model.Alergeny;
 import com.JemToDobre.model.Kategoria_Menu;
 import com.JemToDobre.model.Pozycje_Menu;
+import com.JemToDobre.repository.AlergenRepository;
 import com.JemToDobre.service.AlergenService;
 import com.JemToDobre.service.KategoriaMenuService;
 import com.JemToDobre.service.PozycjeMenuService;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    private final AlergenRepository alergenRepository;
+    public AdminController(AlergenRepository alergenRepository) {this.alergenRepository = alergenRepository;}
 
     @Autowired
     private AlergenService alergenService;
@@ -98,7 +102,7 @@ public class AdminController {
         model.addAttribute("pozycja", new Pozycje_Menu());
         model.addAttribute("kategorie", kategoriaMenuService.findAll());
         model.addAttribute("alergeny", alergenService.findAll());
-        return "admin/pozycje_form";
+        return "admin/pozycja_form";
     }
 
     @PostMapping("/pozycja")
@@ -112,7 +116,7 @@ public class AdminController {
         model.addAttribute("pozycja", pozycjeMenuService.findById(id));
         model.addAttribute("kategorie", kategoriaMenuService.findAll());
         model.addAttribute("alergeny", alergenService.findAll());
-        return "admin/pozycje_form";
+        return "admin/pozycja_form";
     }
 
     @GetMapping("/pozycja/delete/{id}")

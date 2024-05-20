@@ -10,12 +10,12 @@
 <div class="container">
     <img src="css/logo.png">
     <h2>Logowanie</h2>
-    <form action="/login" method="post">
+    <form form method="post" th:action="@{/login-submit}">
         <div class="form-group">
-            <input type="text" id="login" name="login" placeholder="Login">
+            <input type="text" id="login" name="login" th:value="${session['fr_login']}" required placeholder="Login">
         </div>
         <div class="form-group">
-            <input type="password" id="password" name="password" placeholder="Hasło">
+            <input type="password" id="password" name="password" th:value="${session['fr_password']}" required placeholder="Hasło">
         </div>
         <div class="form-group checkbox-group">
             <label class="toggle" style="margin-right: 8px;">

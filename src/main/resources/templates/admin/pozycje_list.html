@@ -10,17 +10,25 @@
 <table>
     <tr>
         <th>ID</th>
-        <th>Nazwa</th>
         <th>Kategoria</th>
+        <th>Alergen</th>
+        <th>Nazwa</th>
+        <th>Opis</th>
+        <th>Cena</th>
+        <th>Skladniki</th>
         <th>Akcje</th>
     </tr>
     <tr th:each="pozycja : ${pozycje}">
-        <td th:text="${pozycja.ID_Pozycja}">1</td>
+        <td th:text="${pozycja.ID_Pozycja_Menu}">1</td>
+        <td th:text="${pozycja.ID_Kategoria}">1</td>
+        <td th:text="${pozycja.ID_Alergen}">1</td>
         <td th:text="${pozycja.Nazwa_Pozycji}">Nazwa</td>
-        <td th:text="${pozycja.kategoria.Nazwa_Kategorii}">Kategoria</td>
+        <td th:text="${pozycja.Opis}">Opis</td>
+        <td th:text="${pozycja.Cena}">Cena</td>
+        <td th:text="${pozycja.Skladniki}">Skladniki</td>
         <td>
-            <a th:href="@{/admin/pozycja/edit/{id}(id=${pozycja.ID_Pozycja})}">Edytuj</a>
-            <a th:href="@{/admin/pozycja/delete/{id}(id=${pozycja.ID_Pozycja})}">Usuń</a>
+            <a th:href="@{/admin/pozycja/edit/{id}(id=${pozycja.ID_Pozycja_Menu})}">Edytuj</a>
+            <a th:href="@{/admin/pozycja/delete/{id}(id=${pozycja.ID_Pozycja_Menu})}">Usuń</a>
         </td>
     </tr>
 </table>

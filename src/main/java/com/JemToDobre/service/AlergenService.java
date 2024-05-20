@@ -2,6 +2,7 @@ package com.JemToDobre.service;
 
 import com.JemToDobre.model.Alergeny;
 import com.JemToDobre.repository.AlergenRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +19,23 @@ public class AlergenService {
         this.alergenRepository = alergenRepository;
     }
 
+    @Transactional
     public List<Alergeny> findAll() {
         return alergenRepository.findAll();
     }
 
-    public Alergeny findById(Long id) {
-        Optional<Alergeny> alergenOptional = alergenRepository.findById(id);
-        return alergenOptional.orElse(null);
+    @Transactional
+    public Optional<Alergeny> findById(Integer id) {
+        return alergenRepository.findById(Integer.valueOf(id));
     }
 
-    public void save(Alergeny alergen) {
-        alergenRepository.save(alergen);
+    @Transactional
+    public Alergeny save(Alergeny alergen) {
+        return alergenRepository.save(alergen);
     }
 
-    public void deleteById(Long id) {
+    @Transactional
+    public void deleteById(Integer id) {
         alergenRepository.deleteById(id);
     }
 }

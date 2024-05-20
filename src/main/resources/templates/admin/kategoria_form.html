@@ -9,7 +9,7 @@
 <form th:action="@{/admin/kategoria}" th:object="${kategoria}" method="post">
     <input type="hidden" th:value="${ID_Kategoria}" />
     <label for="nazwa">Nazwa:</label>
-    <input type="text" id="nazwa" th:value="${Nazwa_Kategorii}" required />
+    <input type="text" id="nazwa" name="nazwa" th:value="${Nazwa_Kategorii}" required />
     <button type="submit">Zapisz</button>
     <button type="button" onclick="window.location.href='/admin/kategorie'">Anuluj</button>
 </form>

@@ -1,20 +1,34 @@
 package com.JemToDobre.Controller;
 
+import com.JemToDobre.model.Kategoria_Menu;
 import com.JemToDobre.model.Pozycje_Menu;
 import com.JemToDobre.model.Pozycje_Zamowienia;
 import com.JemToDobre.model.Zamowienia;
+import com.JemToDobre.service.KategoriaMenuService;
 import com.JemToDobre.service.MenuItemService;
+import com.JemToDobre.service.PozycjeMenuService;
 import com.JemToDobre.service.ZamowieniaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
-@RequestMapping("/menu")
+@RequestMapping("/menu2")
 @SessionAttributes("zamowienie")
 public class MenuController {
     private final MenuItemService menuItemService;
     private final ZamowieniaService zamowieniaService;
+
+    @Autowired
+    PozycjeMenuService pozycjeMenuService;
+
+    @Autowired
+    KategoriaMenuService kategoriaMenuService;
 
     public MenuController(MenuItemService menuItemService, ZamowieniaService zamowieniaService) {
         this.menuItemService = menuItemService;
@@ -28,8 +42,22 @@ public class MenuController {
 
     @GetMapping
     public String showMenu(Model model) {
-        model.addAttribute("menuItems", menuItemService.findAll());
-        return "menu";
+        //model.addAttribute("menuItems", menuItemService.findAll());
+        List<Kategoria_Menu> kategorie = kategoriaMenuService.findAll();
+        model.addAttribute("kategorie", kategorie);
+
+        Map<Kategoria_Menu, List<Pozycje_Menu>> pozycjeMenuMap = new HashMap<>();
+
+        for (Kategoria_Menu kategoria : kategorie) {
+            List<Pozycje_Menu> pozycjeMenu = pozycjeMenuService.findByKategoria(kategoria); // Przykładowa metoda pobierająca pozycje menu dla danej kategorii
+            pozycjeMenuMap.put(kategoria, pozycjeMenu);
+        }
+
+        model.addAttribute("pozycjeMenuMap", pozycjeMenuMap);
+
+        //model.addAttribute("pozycje", pozycjeMenuService.findAll());
+        //model.addAttribute("kategorie", kategoriaMenuService.findAll());
+        return "menu2";
     }
 
     @PostMapping("/add-to-cart")
@@ -42,7 +70,7 @@ public class MenuController {
             pozycjaZamowienia.setCena(menuItem.getCena());
             zamowieniaService.addItemToOrder(zamowienie, pozycjaZamowienia);
         }
-        return "redirect:/menu";
+        return "redirect:/menu2";
     }
 
     @GetMapping("/cart")

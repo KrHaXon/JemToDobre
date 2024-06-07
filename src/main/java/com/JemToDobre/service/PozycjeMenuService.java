@@ -1,5 +1,6 @@
 package com.JemToDobre.service;
 
+import com.JemToDobre.model.Kategoria_Menu;
 import com.JemToDobre.model.Pozycje_Menu;
 import com.JemToDobre.repository.PozycjeMenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class PozycjeMenuService {
 
     public void deleteById(Integer id) {
         pozycjeMenuRepository.deleteById(id);
+    }
+
+    public List<Pozycje_Menu> findByKategoria(Kategoria_Menu kategoria) {
+        return pozycjeMenuRepository.findByKategoria(kategoria);
     }
 }

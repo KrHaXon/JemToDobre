@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="">
     <title>Lista Pozycji Menu</title>
 </head>
 <body>
@@ -20,8 +20,8 @@
     </tr>
     <tr th:each="pozycja : ${pozycje}">
         <td th:text="${pozycja.ID_Pozycja_Menu}">1</td>
-        <td th:text="${pozycja.ID_Kategoria}">1</td>
-        <td th:text="${pozycja.ID_Alergen}">1</td>
+        <td th:text="${pozycja.kategoria.nazwa_Kategorii}">Nazwa Kategorii</td>
+        <td th:text="${pozycja.alergen.nazwa_Alergenu}">Nazwa Alergenu</td>
         <td th:text="${pozycja.Nazwa_Pozycji}">Nazwa</td>
         <td th:text="${pozycja.Opis}">Opis</td>
         <td th:text="${pozycja.Cena}">Cena</td>

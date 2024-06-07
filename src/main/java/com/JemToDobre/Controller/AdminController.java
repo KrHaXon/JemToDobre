@@ -3,6 +3,9 @@ package com.JemToDobre.Controller;
 import com.JemToDobre.model.Alergeny;
 import com.JemToDobre.model.Kategoria_Menu;
 import com.JemToDobre.model.Pozycje_Menu;
+import com.JemToDobre.repository.AlergenRepository;
+import com.JemToDobre.repository.KategoriaMenuRepository;
+import com.JemToDobre.repository.PozycjeMenuRepository;
 import com.JemToDobre.service.AlergenService;
 import com.JemToDobre.service.KategoriaMenuService;
 import com.JemToDobre.service.PozycjeMenuService;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @Controller
@@ -26,6 +30,17 @@ public class AdminController {
     @Autowired
     private PozycjeMenuService pozycjeMenuService;
 
+    private final AlergenRepository alergenRepository;
+    private final PozycjeMenuRepository pozycjeMenuRepository;
+    private final KategoriaMenuRepository kategoriaMenuRepository;
+
+    @Autowired
+    public AdminController(AlergenRepository alergenRepository, PozycjeMenuRepository pozycjeMenuRepository, KategoriaMenuRepository kategoriaMenuRepository) {
+        this.alergenRepository = alergenRepository;
+        this.pozycjeMenuRepository = pozycjeMenuRepository;
+        this.kategoriaMenuRepository = kategoriaMenuRepository;
+    }
+
     // Alergeny
     @GetMapping("/alergeny")
     public String listAlergeny(Model model) {
@@ -40,8 +55,18 @@ public class AdminController {
     }
 
     @PostMapping("/alergen")
-    public String saveAlergen(@ModelAttribute("alergen") Alergeny alergen, Model model) {
-        alergenService.save(alergen);
+    public String saveAlergen(@RequestParam("nazwa") String nazwa,
+                              @RequestParam("opis") String opis,
+                              @RequestParam("typ") String typ,
+                              @RequestParam("zrodlo") String zrodlo,
+                              Model model) {
+        model.addAttribute("Nazwa_Alergenu", nazwa);
+        model.addAttribute("Opis_Alergenu", opis);
+        model.addAttribute("Typ_Alergenu", typ);
+        model.addAttribute("Zrodlo_Alergenu", zrodlo);
+        Alergeny alergeny = new Alergeny(nazwa, opis, typ, zrodlo);
+        alergenRepository.save(alergeny);
+        //alergenService.save(alergen);
         return "redirect:/admin/alergeny";
     }
 
@@ -116,9 +141,31 @@ public class AdminController {
     }
 
     @PostMapping("/pozycja")
-    public String savePozycja(@ModelAttribute Pozycje_Menu pozycja) {
-        pozycjeMenuService.save(pozycja);
+    public String savePozycja(@RequestParam("nazwa") String nazwa,
+                              @RequestParam("opis") String opis,
+                              @RequestParam("cena") Double cena,
+                              @RequestParam("skladniki") String skladniki,
+                              @RequestParam("kategoria") Integer kategoriaId,
+                              @RequestParam("alergen") Integer alergenId,
+                              Model model) {
+
+        Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
+        Optional<Alergeny> optionalAlergen = alergenService.findById(alergenId);
+        Alergeny alergen = optionalAlergen.orElse(null);
+
+        model.addAttribute("Nazwa_Pozycji", nazwa);
+        model.addAttribute("Opis", opis);
+        model.addAttribute("Cena", cena);
+        model.addAttribute("Skladniki", skladniki);
+        model.addAttribute("Kategoria", kategoria);
+        model.addAttribute("Alergen", alergen);
+
+        Pozycje_Menu pozycja = new Pozycje_Menu(nazwa, opis, cena, skladniki, kategoria, alergen);
+        pozycjeMenuRepository.save(pozycja);
+
+        //System.out.println(pozycja);
         return "redirect:/admin/pozycje";
+
     }
 
     @GetMapping("/pozycja/edit/{id}")

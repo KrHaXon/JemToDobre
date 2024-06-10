@@ -42,21 +42,6 @@ img{
     margin: 0 auto 10px;
 }
 
-.menu-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.menu-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    border-top: #4c2264 solid 2px;
-}
-
 .menu-item p{
     margin: 0;
     width: 100%;
@@ -105,4 +90,3 @@ img{
 .add-to-cart-button:hover {
     background-color: #7a288a;
 }
-

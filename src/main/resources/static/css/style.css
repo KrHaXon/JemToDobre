@@ -41,10 +41,23 @@ nav {
     height: 100%;
 }
 
+.nav-left {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 .center-link {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    height: 100%;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     height: 100%;
 }
 
@@ -59,9 +72,18 @@ nav {
     transition: background-color 0.3s ease, box-shadow 0.3s;
 }
 
-.center-link a:hover {
+.cart-icon a {
+    color: #4c2264;
+    text-decoration: none;
+}
+
+.center-link a:hover{
     background-color: #7a288a;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.cart-icon i:hover{
+    color: #7a288a;
 }
 
 .nav-links a,
@@ -96,10 +118,13 @@ nav.sticky {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.nav-links.sticky,
-.login-register.sticky {
+.nav-links.sticky{
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.nav-right.sticky, .center-link.sticky{
+    margin-right: 20px;
 }
 
 .first-section.sticky-margin {

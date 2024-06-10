@@ -31,6 +31,7 @@ public class Uzytkownicy {
         this.Email = email;
         this.Password = password;
         this.Telefon = phone;
+        this.Typ_Uzytkownika = RodzajUzytkownika.ZALOGOWANY;
     }
 
     public Uzytkownicy(String login, String password) {

@@ -10,6 +10,9 @@
 <div class="container">
     <img src="css/logo.png">
     <h2>Rejestracja</h2>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
     <form form method="post" th:action="@{/register-submit}">
 
         <div class="form-group">

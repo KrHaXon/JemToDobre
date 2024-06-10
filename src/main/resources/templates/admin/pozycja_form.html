@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Dodaj/Edytuj Pozycję Menu</h1>
-<form th:action="@{/admin/pozycja}" th:object="${pozycja}" method="post">
+<form th:action="@{/admin/pozycja}" th:object="${pozycja}" method="post" enctype="multipart/form-data">
     <label for="nazwa">Nazwa:</label>
     <input type="text" id="nazwa" th:value="${Nazwa_Pozycji}" name="nazwa" required /><br>
     <label for="opis">Opis:</label>
@@ -23,8 +23,8 @@
     <select id="alergen" th:value="${ID_Alergen}" name="alergen">
         <option th:each="alergen : ${alergeny}" th:value="${alergen.ID_Alergen}" th:text="${alergen.Nazwa_Alergenu}"></option>
     </select><br>
-    <label for="kategoria">Zdjęcie:</label>
-    <input type="file" name="zdjecie" id="zdjecie" accept=".jpg, .jpeg, .png"><br>
+    <label for="zdjecie">Zdjęcie:</label>
+    <input type="file"  name="zdjecie" id="zdjecie" accept=".jpg, .jpeg, .png" th:value="${Zdjecie}"><br>
 
 
     <button type="submit">Zapisz</button>

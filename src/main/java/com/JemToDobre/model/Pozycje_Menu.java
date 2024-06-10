@@ -1,13 +1,12 @@
 package com.JemToDobre.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @NoArgsConstructor
@@ -15,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name="pozycje_menu")
 
 public class Pozycje_Menu {
@@ -26,7 +26,9 @@ public class Pozycje_Menu {
     private String Opis;
     private Double Cena;
     private String Skladniki;
-
+    @Lob
+    @Column(name = "imagedata", columnDefinition = "LONGBLOB")
+    private String imageData;
     @ManyToOne
     @JoinColumn(name = "ID_Kategoria", referencedColumnName = "ID_Kategoria")
     private Kategoria_Menu kategoria;
@@ -35,13 +37,14 @@ public class Pozycje_Menu {
     @JoinColumn(name = "ID_Alergen", referencedColumnName = "ID_Alergen")
     private Alergeny alergen;
 
-    public Pozycje_Menu(String nazwa, String opis, Double cena, String skladniki, Kategoria_Menu kategoria, Alergeny alergen) {
+    public Pozycje_Menu(String nazwa, String opis, Double cena, String skladniki, Kategoria_Menu kategoria, Alergeny alergen, String file) throws IOException {
         this.Nazwa_Pozycji = nazwa;
         this.Opis = opis;
         this.Cena = cena;
         this.Skladniki = skladniki;
         this.kategoria = kategoria;
         this.alergen = alergen;
+        this.imageData = file;
     }
 
     @Override

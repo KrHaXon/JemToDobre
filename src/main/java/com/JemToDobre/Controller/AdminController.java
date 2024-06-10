@@ -1,5 +1,6 @@
 package com.JemToDobre.Controller;
 
+import com.JemToDobre.Util.ImageUtils;
 import com.JemToDobre.model.Alergeny;
 import com.JemToDobre.model.Kategoria_Menu;
 import com.JemToDobre.model.Pozycje_Menu;
@@ -13,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Optional;
 
 @Controller
@@ -147,20 +151,21 @@ public class AdminController {
                               @RequestParam("skladniki") String skladniki,
                               @RequestParam("kategoria") Integer kategoriaId,
                               @RequestParam("alergen") Integer alergenId,
-                              Model model) {
+                              @RequestParam("zdjecie") MultipartFile zdjecie,
+                              Model model) throws IOException {
 
         Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
         Optional<Alergeny> optionalAlergen = alergenService.findById(alergenId);
         Alergeny alergen = optionalAlergen.orElse(null);
-
         model.addAttribute("Nazwa_Pozycji", nazwa);
         model.addAttribute("Opis", opis);
         model.addAttribute("Cena", cena);
         model.addAttribute("Skladniki", skladniki);
         model.addAttribute("Kategoria", kategoria);
         model.addAttribute("Alergen", alergen);
+        model.addAttribute("Zdjecie", zdjecie);
 
-        Pozycje_Menu pozycja = new Pozycje_Menu(nazwa, opis, cena, skladniki, kategoria, alergen);
+        Pozycje_Menu pozycja = new Pozycje_Menu(nazwa, opis, cena, skladniki, kategoria, alergen, Base64.getEncoder().encodeToString(zdjecie.getBytes()));
         pozycjeMenuRepository.save(pozycja);
 
         //System.out.println(pozycja);

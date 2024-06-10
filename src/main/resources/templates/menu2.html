@@ -39,7 +39,9 @@
         <div th:each="pozycja : ${entry.value}" class="menu-item">
             <div>
                 <h3 class="menu-item-name" th:text="${pozycja.Nazwa_Pozycji}">Nazwa Pozycji</h3>
-
+                <img th:if="${pozycja.imageData != null}"
+                     th:src="'data:image/png;base64,' + ${pozycja.imageData}"
+                     alt="Zdjęcie dania"/>
                 <p th:text="${pozycja.Opis}">Opis</p>
                 <h4 class="description_h">Składniki:</h4>
                 <p th:text="${pozycja.Skladniki}">Składniki</p>

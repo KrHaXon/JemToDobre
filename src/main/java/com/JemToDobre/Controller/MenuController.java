@@ -46,13 +46,14 @@ public class MenuController {
         //model.addAttribute("menuItems", menuItemService.findAll());
         Boolean isLoggedIn = session.getAttribute("loggedInUser") != null;
         model.addAttribute("isLoggedIn", isLoggedIn);
+
         List<Kategoria_Menu> kategorie = kategoriaMenuService.findAll();
         model.addAttribute("kategorie", kategorie);
 
         Map<Kategoria_Menu, List<Pozycje_Menu>> pozycjeMenuMap = new HashMap<>();
 
         for (Kategoria_Menu kategoria : kategorie) {
-            List<Pozycje_Menu> pozycjeMenu = pozycjeMenuService.findByKategoria(kategoria); // Przykładowa metoda pobierająca pozycje menu dla danej kategorii
+            List<Pozycje_Menu> pozycjeMenu = pozycjeMenuService.findByKategoria(kategoria);
             pozycjeMenuMap.put(kategoria, pozycjeMenu);
         }
 

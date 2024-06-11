@@ -1,12 +1,9 @@
 package com.JemToDobre.service;
 
-
 import com.JemToDobre.model.Uzytkownicy;
-import com.JemToDobre.model.toenum.RodzajUzytkownika;
 import com.JemToDobre.repository.UzytkownicyRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,7 +11,6 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UzytkownicyRepository userRepository;
-    //private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UzytkownicyRepository userRepository) {
@@ -40,14 +36,7 @@ public class UserService {
     }
 
     @Transactional
-    public Uzytkownicy saveUser (Uzytkownicy user) {
+    public Uzytkownicy saveUser(Uzytkownicy user) {
         return userRepository.save(user);
     }
-
-    //public Uzytkownicy registerUser(Uzytkownicy user) {
-      //  String password = passwordEncoder.encode(user.getPassword());
-      //  user.setPassword(password);
-     //   user.setTyp_Uzytkownika(RodzajUzytkownika.ZALOGOWANY);
-     //   return saveUser(user);
-   // }/
 }

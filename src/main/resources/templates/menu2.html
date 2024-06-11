@@ -48,7 +48,7 @@
             <a th:unless="${isLoggedIn}" href="register">Zarejestruj</a>
         </div>
         <div class="cart-icon">
-            <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+            <a href="/cart" id="view-cart-button"><i class="fas fa-shopping-cart"></i></a>
         </div>
     </div>
 </nav>
@@ -74,7 +74,9 @@
             <p th:text="${pozycja.alergen.opis_Alergenu}">Opis alergenu</p>
             <h4 class="description_h">Cena</h4>
             <p th:text="${pozycja.Cena}  + ' zł'">Cena</p>
-            <button class="add-to-cart-button">Dodaj do koszyka</button>
+            <form th:action="@{/cart/add/{id}(id=${pozycja.ID_Pozycja_Menu})}" method="post">
+                <button type="submit" class="add-to-cart-button">Dodaj do koszyka</button>
+            </form>
         </div>
     </div>
 </section>

@@ -6,22 +6,27 @@ import com.JemToDobre.repository.UzytkownicyRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
 public class LoginController {
-    private final UzytkownicyRepository uzytkownicyRepository;
+    @Autowired
+    private UzytkownicyRepository uzytkownicyRepository;
 
-    public LoginController(UzytkownicyRepository uzytkownicyRepository)
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    /*public LoginController(UzytkownicyRepository uzytkownicyRepository, PasswordEncoder passwordEncoder)
     {
         this.uzytkownicyRepository = uzytkownicyRepository;
-    }
+        this.passwordEncoder = passwordEncoder;
+    }*/
     /*@PostMapping("/login-submit")
     public String login(@RequestBody LoginDto loginDto)
     {
@@ -33,31 +38,25 @@ public class LoginController {
     }*/
 
     @PostMapping("/login-submit")
-    public String login(@RequestParam("login") String username,
-                        @RequestParam("password") String password,
-                        HttpSession session, Model model)
+    public ResponseEntity<Map<String, String>> login(@RequestParam("login") String username,
+                                                     @RequestParam("password") String password,
+                                                     HttpSession session, Model model)
     {
+        Map<String, String> response = new HashMap<>();
+
         //boolean isLoggedIn = false;
-        Optional<Uzytkownicy> optionalUser = uzytkownicyRepository.findUserByUsername(username);
-        if (optionalUser.isPresent())
-        {
-           // isLoggedIn = true;
-            Uzytkownicy uzytkownicy = optionalUser.get();
-            //String hashedPassword = uzytkownicy.getPassword();
-            //if (passwordMatches(password, hashedPassword)) {
-            session.setAttribute("loggedInUser", uzytkownicy);
-            //session.setAttribute("role", uzytkownicy.getTyp_Uzytkownika().name());
-            System.out.println("Logged in user: " + session.getAttribute("loggedInUser"));
-            System.out.println(password);
-            model.addAttribute("Uzytkownicy", uzytkownicy);
-            model.addAttribute("isLoggedIn", true);
-            System.out.println("isLoggedIn: " + model.getAttribute("isLoggedIn"));
-            return "redirect:/";
+       Uzytkownicy user = uzytkownicyRepository.findUserByUsername(username);
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            response.put("status", "error");
+            response.put("message", "Nieprawidłowy login lub hasło");
+            return ResponseEntity.badRequest().body(response);
         }
-        else {
-            model.addAttribute("error", "Nieprawidłowa nazwa użytkownika lub hasło!");
-            return "login";
-        }
+        // Zapisanie użytkownika w sesji
+        session.setAttribute("loggedInUser", user);
+
+        // Przekierowanie na stronę główną lub inny widok po zalogowaniu
+        response.put("status", "success");
+        return ResponseEntity.ok(response);
     }
     @GetMapping("/logout")
     public String logout(HttpSession session, Model model)

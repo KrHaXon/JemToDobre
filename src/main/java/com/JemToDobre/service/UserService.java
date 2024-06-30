@@ -23,18 +23,9 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<Uzytkownicy> findUserByUsername(String username) {
+    public Uzytkownicy findUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
     }
-
-    public boolean emailExists(String email) {
-        return findUserByEmail(email).isPresent();
-    }
-
-    public boolean usernameExists(String username) {
-        return findUserByUsername(username).isPresent();
-    }
-
     @Transactional
     public Uzytkownicy saveUser(Uzytkownicy user) {
         return userRepository.save(user);

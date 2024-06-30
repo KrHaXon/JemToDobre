@@ -13,7 +13,7 @@ import java.util.Optional;
 @EnableJpaRepositories
 public interface UzytkownicyRepository extends JpaRepository<Uzytkownicy, Integer> {
     @Query("Select u from Uzytkownicy u where u.Nazwa_Uzytkownika=:Nazwa_Uzytkownika")
-    public Optional<Uzytkownicy> findUserByUsername(@Param("Nazwa_Uzytkownika")String username);
+    public Uzytkownicy findUserByUsername(@Param("Nazwa_Uzytkownika")String username);
     @Query("Select u from Uzytkownicy u where u.Email=:Email")
     public Optional<Uzytkownicy> findByEmail(@Param("Email")String Email);
 

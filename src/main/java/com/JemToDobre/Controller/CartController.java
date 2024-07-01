@@ -78,14 +78,4 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @GetMapping("/orders")
-    public String showOrders(Model model, HttpSession session) {
-        List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
-        double totalPrice = cart.stream().mapToDouble(Pozycje_Menu::getCena).sum();
-        totalPrice = Double.parseDouble(String.format("%.2f", totalPrice).replace(",", "."));
-        model.addAttribute("cart", cart);
-        model.addAttribute("totalPrice", totalPrice);
-        session.removeAttribute("cart"); // Usunięcie koszyka z sesji po złożeniu zamówienia
-        return "orders";
-    }
 }

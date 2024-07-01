@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>Zamówienia</title>
     <link rel="stylesheet" type="text/css" href="/css/orders.css">
+    <script>
+        function toggleAddressField() {
+            var deliveryOption = document.getElementById('delivery-option');
+            var addressField = document.getElementById('delivery-address-field');
+            if (deliveryOption.value === 'delivery') {
+                addressField.style.display = 'block';
+            } else {
+                addressField.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
 <h1>Twoje zamówienie</h1>
@@ -18,9 +29,53 @@
     </div>
 </div>
 
+<div id="order-type">
+    <h4>Opcje Zamówienia:</h4>
+    <select id="delivery-option" onchange="toggleAddressField()">
+        <option value="in-restaurant">W Restauracji</option>
+        <option value="takeaway">Na Wynos</option>
+        <option value="delivery">Na Dowóz</option>
+    </select>
+</div>
+
+<div id="delivery-address-field" style="display: none;">
+    <h4>Adres dostawy:</h4>
+    <label for="city">Miasto:</label>
+    <input type="text" id="city" name="city" placeholder="Podaj miasto">
+
+    <label for="street">Ulica:</label>
+    <input type="text" id="street" name="street" placeholder="Podaj ulicę">
+
+    <label for="house-number">Numer Domu:</label>
+    <input type="text" id="house-number" name="houseNumber" placeholder="Podaj numer domu">
+
+    <label for="apartment-number">Numer Mieszkania:</label>
+    <input type="text" id="apartment-number" name="apartmentNumber" placeholder="Podaj numer mieszkania">
+
+    <label for="postal-code">Kod Pocztowy:</label>
+    <input type="number" id="postal-code" name="postalCode" placeholder="Podaj kod pocztowy">
+</div>
+
+<div id="order-comments">
+    <h4>Uwagi do zamówienia:</h4>
+    <textarea id="order-comments-text" name="orderComments" placeholder="Wprowadź uwagi do zamówienia"></textarea>
+</div>
+
+<div id="payment-method">
+    <h4>Metoda Płatności:</h4>
+    <select id="payment-method-select" name="paymentMethod">
+        <option value="card">Karta Płatnicza</option>
+        <option value="cash">Gotówka</option>
+    </select>
+</div>
+
 <div id="total-price">
     <h4>Łączna Cena:</h4>
     <p id="total-price-value" th:text="${totalPrice} + ' PLN'">0 PLN</p>
+</div>
+
+<div id="submit-order">
+    <button type="submit">Złóż zamówienie</button>
 </div>
 </body>
 </html>

@@ -14,9 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/menu2")
@@ -48,9 +46,12 @@ public class MenuController {
         model.addAttribute("isLoggedIn", isLoggedIn);
 
         List<Kategoria_Menu> kategorie = kategoriaMenuService.findAll();
+
+        kategorie.sort(Comparator.comparing(Kategoria_Menu::getNazwa_Kategorii).reversed());
+
         model.addAttribute("kategorie", kategorie);
 
-        Map<Kategoria_Menu, List<Pozycje_Menu>> pozycjeMenuMap = new HashMap<>();
+        Map<Kategoria_Menu, List<Pozycje_Menu>> pozycjeMenuMap = new LinkedHashMap<>();
 
         for (Kategoria_Menu kategoria : kategorie) {
             List<Pozycje_Menu> pozycjeMenu = pozycjeMenuService.findByKategoria(kategoria);

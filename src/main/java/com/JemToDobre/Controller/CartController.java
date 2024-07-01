@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.JemToDobre.model.Kategoria_Menu;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -25,8 +23,22 @@ public class CartController {
     @GetMapping("/menu")
     public String menu(Model model) {
         List<Pozycje_Menu> allItems = pozycjeMenuService.findAll();
-        Map<Kategoria_Menu, List<Pozycje_Menu>> pozycjeMenuMap = allItems.stream()
-                .collect(Collectors.groupingBy(Pozycje_Menu::getKategoria));
+
+        List<Kategoria_Menu> kategorie = allItems.stream()
+                .map(Pozycje_Menu::getKategoria)
+                .distinct()
+                .sorted(Comparator.comparing(Kategoria_Menu::getNazwa_Kategorii).reversed())
+                .collect(Collectors.toList());
+
+        Map<Kategoria_Menu, List<Pozycje_Menu>> pozycjeMenuMap = new LinkedHashMap<>();
+
+        for (Kategoria_Menu kategoria : kategorie) {
+            List<Pozycje_Menu> pozycjeMenu = allItems.stream()
+                    .filter(item -> item.getKategoria().equals(kategoria))
+                    .collect(Collectors.toList());
+            pozycjeMenuMap.put(kategoria, pozycjeMenu);
+        }
+
         model.addAttribute("pozycjeMenuMap", pozycjeMenuMap);
         return "menu2";
     }
@@ -64,5 +76,16 @@ public class CartController {
         }
         session.setAttribute("cart", cart);
         return "redirect:/cart";
+    }
+
+    @GetMapping("/orders")
+    public String showOrders(Model model, HttpSession session) {
+        List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
+        double totalPrice = cart.stream().mapToDouble(Pozycje_Menu::getCena).sum();
+        totalPrice = Double.parseDouble(String.format("%.2f", totalPrice).replace(",", "."));
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalPrice", totalPrice);
+        session.removeAttribute("cart"); // Usunięcie koszyka z sesji po złożeniu zamówienia
+        return "orders";
     }
 }

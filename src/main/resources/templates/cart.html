@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
+    <link rel="stylesheet" type="text/css" href="/css/cart.css">
 </head>
 <body>
-<h1>Cart</h1>
+<h1>Twoje zamówienie</h1>
 <div id="cart-items">
     <div th:each="item, iter : ${cart}" class="cart-item">
-        <h4 th:text="${item.Nazwa_Pozycji}"></h4>
-        <p th:text="${item.Cena} + ' PLN'"></p>
+        <div class="item-details">
+            <img th:if="${item.imageData != null}"
+                 th:src="'data:image/png;base64,' + ${item.imageData}"
+                 alt="Zdjęcie dania" class="item-image" />
+            <div class="item-info">
+                <h4 th:text="${item.Nazwa_Pozycji}"></h4>
+                <p th:text="${item.Cena} + ' PLN'"></p>
+            </div>
+        </div>
         <form th:action="@{/cart/remove/{index}(index=${iter.index})}" method="post">
             <button type="submit">Usuń</button>
         </form>
@@ -21,7 +29,7 @@
     <p id="total-price-value" th:text="${totalPrice} + ' PLN'">0 PLN</p>
 </div>
 
-<button id="checkout-button">Złóż zamówienie</button>
+<a th:href="@{orders}"><button type="button" id="checkout-button">Złóż zamówienie</button></a>
 
 </body>
 </html>

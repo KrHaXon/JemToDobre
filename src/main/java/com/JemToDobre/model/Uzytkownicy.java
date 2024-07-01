@@ -6,7 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.JemToDobre.model.toenum.RodzajUzytkownika;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -65,4 +70,5 @@ public class Uzytkownicy {
                 ", Typ_Uzytkownika=" + Typ_Uzytkownika +
                 '}';
     }
+
 }

@@ -79,10 +79,17 @@ public class AdminController {
         Optional<Alergeny> alergen = alergenService.findById(id);
         if (alergen.isPresent()) {
             model.addAttribute("alergen", alergen.get());
-            return "admin/alergen_form";
+            return "admin/alergen_edit_form"; // Szablon Thymeleaf dla formularza edycji alergenu
         } else {
-            return "redirect:/admin/alergeny";
+            return "redirect:/admin/alergeny"; // Przekierowanie, jeśli alergen o danym ID nie istnieje
         }
+    }
+
+    // Metoda do obsługi edycji alergenu po przesłaniu formularza
+    @PostMapping("/alergen/edit")
+    public String processEditAlergen(@ModelAttribute Alergeny alergen) {
+        alergenService.save(alergen);
+        return "redirect:/admin/alergeny"; // Przekierowanie na listę alergenów po zapisie
     }
 
     @GetMapping("/alergen/delete/{id}")
@@ -117,10 +124,17 @@ public class AdminController {
         Optional<Kategoria_Menu> kategoria = Optional.ofNullable(kategoriaMenuService.findById(id));
         if (kategoria.isPresent()) {
             model.addAttribute("kategoria", kategoria.get());
-            return "admin/kategoria_form";
+            return "admin/kategoria_edit_form"; // Szablon Thymeleaf dla formularza edycji kategorii
         } else {
-            return "redirect:/admin/kategorie";
+            return "redirect:/admin/kategorie"; // Przekierowanie, jeśli kategoria o danym ID nie istnieje
         }
+    }
+
+    // Metoda do obsługi edycji kategorii po przesłaniu formularza
+    @PostMapping("/kategoria/edit")
+    public String processEditKategoria(@ModelAttribute Kategoria_Menu kategoria) {
+        kategoriaMenuService.save(kategoria);
+        return "redirect:/admin/kategorie"; // Przekierowanie na listę kategorii po zapisie
     }
 
     @GetMapping("/kategoria/delete/{id}")
@@ -184,6 +198,39 @@ public class AdminController {
         } else {
             return "redirect:/admin/pozycje";
         }
+    }
+
+    @PostMapping("/pozycja/edit")
+    public String processEditPozycja(@RequestParam("id") Integer id,
+                                     @RequestParam("nazwa") String nazwa,
+                                     @RequestParam("opis") String opis,
+                                     @RequestParam("cena") Double cena,
+                                     @RequestParam("skladniki") String skladniki,
+                                     @RequestParam("kategoria") Integer kategoriaId,
+                                     @RequestParam("alergen") Integer alergenId,
+                                     @RequestParam("zdjecie") MultipartFile zdjecie,
+                                     Model model) throws IOException {
+        Pozycje_Menu pozycja = pozycjeMenuService.findById(id);
+        if (pozycja != null) {
+            pozycja.setNazwa_Pozycji(nazwa);
+            pozycja.setOpis(opis);
+            pozycja.setCena(cena);
+            pozycja.setSkladniki(skladniki);
+
+            Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
+            pozycja.setKategoria(kategoria);
+
+            Alergeny alergen = alergenService.findById(alergenId).orElse(null);
+            pozycja.setAlergen(alergen);
+
+            if (!zdjecie.isEmpty()) {
+                pozycja.setImageData(Base64.getEncoder().encodeToString(zdjecie.getBytes()));
+            }
+
+            pozycjeMenuService.save(pozycja);
+        }
+
+        return "redirect:/admin/pozycje";
     }
 
     @GetMapping("/pozycja/delete/{id}")

@@ -30,4 +30,5 @@ public class UserService {
     public Uzytkownicy saveUser(Uzytkownicy user) {
         return userRepository.save(user);
     }
+
 }

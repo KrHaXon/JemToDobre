@@ -28,7 +28,6 @@
         </div>
     </div>
 </div>
-
 <div id="order-type">
     <h4>Opcje Zamówienia:</h4>
     <select id="delivery-option" onchange="toggleAddressField()">
@@ -37,45 +36,46 @@
         <option value="delivery">Na Dowóz</option>
     </select>
 </div>
+<form method="post" th:action="@{/orders-submit}">
+    <div id="delivery-address-field" style="display: none;">
+        <h4>Adres dostawy:</h4>
+        <label for="city">Miasto:</label>
+        <input type="text" id="city" name="city" th:value="${session['fr_city']}" required placeholder="Podaj miasto">
 
-<div id="delivery-address-field" style="display: none;">
-    <h4>Adres dostawy:</h4>
-    <label for="city">Miasto:</label>
-    <input type="text" id="city" name="city" placeholder="Podaj miasto">
+        <label for="street">Ulica:</label>
+        <input type="text" id="street" name="street" th:value="${session['fr_street']}" required placeholder="Podaj ulicę">
 
-    <label for="street">Ulica:</label>
-    <input type="text" id="street" name="street" placeholder="Podaj ulicę">
+        <label for="house-number">Numer Domu:</label>
+        <input type="number" id="house-number" name="house-number" th:value="${session['fr_house-number']}" required placeholder="Podaj numer domu">
 
-    <label for="house-number">Numer Domu:</label>
-    <input type="text" id="house-number" name="houseNumber" placeholder="Podaj numer domu">
+        <label for="apartment-number">Numer Mieszkania:</label>
+        <input type="number" id="apartment-number" name="apartment-number" th:value="${session['fr_apartment-number']}" placeholder="Podaj numer mieszkania">
 
-    <label for="apartment-number">Numer Mieszkania:</label>
-    <input type="text" id="apartment-number" name="apartmentNumber" placeholder="Podaj numer mieszkania">
+        <label for="postal-code">Kod Pocztowy:</label>
+        <input type="text" id="postal-code" name="postal-code" th:value="${session['fr_postal-code']}" required placeholder="Podaj kod pocztowy">
+    </div>
 
-    <label for="postal-code">Kod Pocztowy:</label>
-    <input type="number" id="postal-code" name="postalCode" placeholder="Podaj kod pocztowy">
-</div>
+    <div id="order-comments">
+        <h4>Uwagi do zamówienia:</h4>
+        <textarea id="order-comments-text" name="orderComments" placeholder="Wprowadź uwagi do zamówienia"></textarea>
+    </div>
 
-<div id="order-comments">
-    <h4>Uwagi do zamówienia:</h4>
-    <textarea id="order-comments-text" name="orderComments" placeholder="Wprowadź uwagi do zamówienia"></textarea>
-</div>
+    <div id="payment-method">
+        <h4>Metoda Płatności:</h4>
+        <select id="payment-method-select" name="paymentMethod">
+            <option value="card">Karta Płatnicza</option>
+            <option value="cash">Gotówka</option>
+        </select>
+    </div>
 
-<div id="payment-method">
-    <h4>Metoda Płatności:</h4>
-    <select id="payment-method-select" name="paymentMethod">
-        <option value="card">Karta Płatnicza</option>
-        <option value="cash">Gotówka</option>
-    </select>
-</div>
+    <div id="total-price">
+        <h4>Łączna Cena:</h4>
+        <p id="total-price-value" th:text="${totalPrice} + ' PLN'">0 PLN</p>
+    </div>
 
-<div id="total-price">
-    <h4>Łączna Cena:</h4>
-    <p id="total-price-value" th:text="${totalPrice} + ' PLN'">0 PLN</p>
-</div>
-
-<div id="submit-order">
-    <button type="submit">Złóż zamówienie</button>
-</div>
+    <div id="submit-order">
+        <button type="submit">Złóż zamówienie</button>
+    </div>
+</form>
 </body>
 </html>

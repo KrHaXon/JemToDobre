@@ -1,6 +1,8 @@
 package com.JemToDobre.Controller;
 
 import com.JemToDobre.model.Pozycje_Menu;
+import com.JemToDobre.model.Pozycje_Zamowienia;
+import com.JemToDobre.repository.PozycjeZamowieniaRepository;
 import com.JemToDobre.service.PozycjeMenuService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,9 @@ public class CartController {
 
     @Autowired
     private PozycjeMenuService pozycjeMenuService;
-
+    @Autowired
+    private PozycjeZamowieniaRepository pozycjeZamowieniaRepository;
+    List<Pozycje_Menu> cart = new ArrayList<>();
     @GetMapping("/menu")
     public String menu(Model model) {
         List<Pozycje_Menu> allItems = pozycjeMenuService.findAll();
@@ -45,7 +49,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cart(Model model, HttpSession session) {
-        List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
+        cart = (List<Pozycje_Menu>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
         }
@@ -59,13 +63,18 @@ public class CartController {
     @PostMapping("/cart/add/{id}")
     public String addToCart(@PathVariable Integer id, HttpSession session) {
         Pozycje_Menu item = pozycjeMenuService.findById(id);
-        List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
+        cart = (List<Pozycje_Menu>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
         }
         cart.add(item);
+        Pozycje_Zamowienia pozycjaZamowienia = new Pozycje_Zamowienia();
+        pozycjaZamowienia.setID_Pozycji(item.getID_Pozycja_Menu());
+        pozycjaZamowienia.setIlosc(cart.size());
+        pozycjaZamowienia.setCena(item.getCena());
+        pozycjeZamowieniaRepository.save(pozycjaZamowienia);
         session.setAttribute("cart", cart);
-        return "redirect:/menu";
+        return "redirect:/menu2";
     }
 
     @PostMapping("/cart/remove/{index}")

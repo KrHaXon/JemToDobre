@@ -22,4 +22,11 @@ public class Pozycje_Zamowienia {
     private Integer ID_Pozycji;
     private Integer Ilosc;
     private Double Cena;
+
+    public Pozycje_Zamowienia(Integer ID_Zamowienia, Integer ID_Pozycji, Integer ilosc, Double cena) {
+        this.ID_Zamowienia = ID_Zamowienia;
+        this.ID_Pozycji = ID_Pozycji;
+        this.Ilosc = ilosc;
+        this.Cena = cena;
+    }
 }

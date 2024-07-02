@@ -3,6 +3,7 @@ package com.JemToDobre.service;
 import com.JemToDobre.model.Pozycje_Zamowienia;
 import com.JemToDobre.model.Zamowienia;
 import com.JemToDobre.repository.ZamowieniaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 public class ZamowieniaService {
     private final ZamowieniaRepository zamowieniaRepository;
 
+    @Autowired
     public ZamowieniaService(ZamowieniaRepository zamowieniaRepository) {
         this.zamowieniaRepository = zamowieniaRepository;
     }

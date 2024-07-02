@@ -12,7 +12,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -20,10 +19,18 @@ import java.math.BigDecimal;
 public class Adres {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID_Adres;
+    private Integer ID_Adres;
     private String Ulica;
     private Integer Nr_Domu;
     private Integer Nr_Mieszkania;
     private String Miejscowosc;
     private String Kod_Pocztowy;
+
+    public Adres(String ulica, Integer nr_Domu, Integer nr_Mieszkania, String miejscowosc, String kod_Pocztowy) {
+        this.Ulica = ulica;
+        this.Nr_Domu = nr_Domu;
+        this.Nr_Mieszkania = nr_Mieszkania;
+        this.Miejscowosc = miejscowosc;
+        this.Kod_Pocztowy = kod_Pocztowy;
+    }
 }

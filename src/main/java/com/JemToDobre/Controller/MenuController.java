@@ -4,6 +4,7 @@ import com.JemToDobre.model.Kategoria_Menu;
 import com.JemToDobre.model.Pozycje_Menu;
 import com.JemToDobre.model.Pozycje_Zamowienia;
 import com.JemToDobre.model.Zamowienia;
+import com.JemToDobre.repository.PozycjeZamowieniaRepository;
 import com.JemToDobre.service.KategoriaMenuService;
 import com.JemToDobre.service.MenuItemService;
 import com.JemToDobre.service.PozycjeMenuService;
@@ -22,7 +23,10 @@ import java.util.*;
 public class MenuController {
     private final MenuItemService menuItemService;
     private final ZamowieniaService zamowieniaService;
+    @Autowired
+    private PozycjeZamowieniaRepository pozycjeZamowieniaRepository;
 
+    List<Pozycje_Menu> lista = new ArrayList<>();
     @Autowired
     PozycjeMenuService pozycjeMenuService;
 
@@ -59,28 +63,29 @@ public class MenuController {
         }
 
         model.addAttribute("pozycjeMenuMap", pozycjeMenuMap);
-
         //model.addAttribute("pozycje", pozycjeMenuService.findAll());
         //model.addAttribute("kategorie", kategoriaMenuService.findAll());
         return "menu2";
     }
 
     @PostMapping("/add-to-cart")
-    public String addToCart(@RequestParam Long menuItemId, @RequestParam int quantity, @ModelAttribute Zamowienia zamowienie) {
+    public String addToCart(@RequestParam Long menuItemId, @RequestParam int quantity, @ModelAttribute Zamowienia zamowienie, HttpSession session) {
         Pozycje_Menu menuItem = menuItemService.findById(menuItemId);
+        lista.add(menuItem);
         if (menuItem != null) {
             Pozycje_Zamowienia pozycjaZamowienia = new Pozycje_Zamowienia();
             pozycjaZamowienia.setID_Pozycji(menuItem.getID_Pozycja_Menu().intValue());
             pozycjaZamowienia.setIlosc(quantity);
             pozycjaZamowienia.setCena(menuItem.getCena());
+            pozycjeZamowieniaRepository.save(pozycjaZamowienia);
             zamowieniaService.addItemToOrder(zamowienie, pozycjaZamowienia);
         }
         return "redirect:/menu2";
     }
 
     @GetMapping("/cart")
-    public String showCart(@ModelAttribute Zamowienia zamowienie, Model model) {
-        model.addAttribute("zamowienie", zamowienie);
+    public String showCart(@ModelAttribute Zamowienia zamowienie, Model model, HttpSession session) {
+        session.setAttribute("zamowienie", zamowienie);
         return "cart";
     }
 }

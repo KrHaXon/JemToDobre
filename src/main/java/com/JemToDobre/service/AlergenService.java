@@ -38,4 +38,8 @@ public class AlergenService {
     public void deleteById(Integer id) {
         alergenRepository.deleteById(id);
     }
+
+    public List<Alergeny> findAllById(List<Integer> ids) {
+        return alergenRepository.findAllById(ids);
+    }
 }

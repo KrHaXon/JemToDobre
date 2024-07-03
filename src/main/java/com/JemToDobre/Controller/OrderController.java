@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class OrderController {
@@ -34,6 +35,7 @@ public class OrderController {
         double totalPrice = cart.stream().mapToDouble(Pozycje_Menu::getCena).sum();
         totalPrice = Double.parseDouble(String.format("%.2f", totalPrice).replace(",", "."));
         model.addAttribute("cart", cart);
+        model.addAttribute("totalPrice", totalPrice);
         session.setAttribute("totalPrice", totalPrice);
         //session.removeAttribute("cart"); // Usunięcie koszyka z sesji po złożeniu zamówienia
         return "orders";
@@ -43,15 +45,27 @@ public class OrderController {
                          @RequestParam("city") String city,
                          @RequestParam("street") String street,
                          @RequestParam("house-number") Integer houseNumber,
-                         @RequestParam("apartment-number") Integer apartmentNumber,
-                         @RequestParam("postal-code") String postalCode) {
+                         @RequestParam("apartment-number") String apartmentNumberStr,
+                         @RequestParam("postal-code") String postalCode,
+                         @RequestParam("orderComments") String orderComments) {
         model.addAttribute("fr_city", city);
         model.addAttribute("fr_street", street);
         model.addAttribute("fr_house-number", houseNumber);
-        model.addAttribute("fr_apartment-number", apartmentNumber);
+
+        Integer actualApartmentNumber = null;
+        if (apartmentNumberStr != null && !apartmentNumberStr.isEmpty()) {
+            try {
+                actualApartmentNumber = Integer.parseInt(apartmentNumberStr);
+            } catch (NumberFormatException e) {
+
+            }
+        }
+        model.addAttribute("fr_apartment-number", actualApartmentNumber);
         model.addAttribute("fr_postal-code", postalCode);
-        Adres adres = new Adres(street, houseNumber, apartmentNumber, city, postalCode);
+
+        Adres adres = new Adres(street, houseNumber, actualApartmentNumber, city, postalCode);
         adresRepository.save(adres);
+
         Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
         Integer temp;
         if(user == null)
@@ -62,12 +76,15 @@ public class OrderController {
         {
             temp = user.getID_Uzytkownik();
         }
+
         LocalDateTime currentDateTime = LocalDateTime.now();
         String status = new String("W trakcie");
-        String dodatkoweinformacje = null;
-        String numerFaktury = null;
+        String dodatkoweinformacje = orderComments;
+        String numerFaktury = String.format("%06d", new Random().nextInt(1000000));
         LocalDateTime currentplustree = LocalDateTime.now();
+
         List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
+
         System.out.println(currentDateTime);
         if (cart == null) {
             return "error";

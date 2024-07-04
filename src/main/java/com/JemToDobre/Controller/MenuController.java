@@ -1,14 +1,8 @@
 package com.JemToDobre.Controller;
 
-import com.JemToDobre.model.Kategoria_Menu;
-import com.JemToDobre.model.Pozycje_Menu;
-import com.JemToDobre.model.Pozycje_Zamowienia;
-import com.JemToDobre.model.Zamowienia;
+import com.JemToDobre.model.*;
 import com.JemToDobre.repository.PozycjeZamowieniaRepository;
-import com.JemToDobre.service.KategoriaMenuService;
-import com.JemToDobre.service.MenuItemService;
-import com.JemToDobre.service.PozycjeMenuService;
-import com.JemToDobre.service.ZamowieniaService;
+import com.JemToDobre.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +17,10 @@ import java.util.*;
 public class MenuController {
     private final MenuItemService menuItemService;
     private final ZamowieniaService zamowieniaService;
+
+    @Autowired
+    PozycjeMenuAlergenyService pozycjeMenuAlergenyService;
+
     @Autowired
     private PozycjeZamowieniaRepository pozycjeZamowieniaRepository;
 
@@ -59,6 +57,11 @@ public class MenuController {
 
         for (Kategoria_Menu kategoria : kategorie) {
             List<Pozycje_Menu> pozycjeMenu = pozycjeMenuService.findByKategoria(kategoria);
+            //pozycjeMenuMap.put(kategoria, pozycjeMenu);
+            for (Pozycje_Menu pozycja : pozycjeMenu) {
+                List<Alergeny> alergenyPozycji = pozycjeMenuAlergenyService.findAlergenyByPozycjaMenu(pozycja);
+                pozycja.setAlergeny(alergenyPozycji); // Ustawienie alergenów w obiekcie pozycji
+            }
             pozycjeMenuMap.put(kategoria, pozycjeMenu);
         }
 
@@ -71,11 +74,9 @@ public class MenuController {
     @PostMapping("/add-to-cart")
     public String addToCart(@RequestParam Long menuItemId, @RequestParam int quantity, @ModelAttribute Zamowienia zamowienie, HttpSession session) {
         Pozycje_Menu menuItem = menuItemService.findById(menuItemId);
-        lista.add(menuItem);
         if (menuItem != null) {
             Pozycje_Zamowienia pozycjaZamowienia = new Pozycje_Zamowienia();
             pozycjaZamowienia.setID_Pozycji(menuItem.getID_Pozycja_Menu().intValue());
-            pozycjaZamowienia.setIlosc(quantity);
             pozycjaZamowienia.setCena(menuItem.getCena());
             pozycjeZamowieniaRepository.save(pozycjaZamowienia);
             zamowieniaService.addItemToOrder(zamowienie, pozycjaZamowienia);

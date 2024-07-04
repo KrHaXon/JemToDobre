@@ -4,17 +4,6 @@
     <meta charset="UTF-8">
     <title>Zamówienia</title>
     <link rel="stylesheet" type="text/css" href="/css/orders.css">
-    <script>
-        function toggleAddressField() {
-            var deliveryOption = document.getElementById('delivery-option');
-            var addressField = document.getElementById('delivery-address-field');
-            if (deliveryOption.value === 'delivery') {
-                addressField.style.display = 'block';
-            } else {
-                addressField.style.display = 'none';
-            }
-        }
-    </script>
 </head>
 <body>
 <h1>Twoje zamówienie</h1>
@@ -28,15 +17,15 @@
         </div>
     </div>
 </div>
+<form method="post" th:action="@{/orders-submit}">
 <div id="order-type">
     <h4>Opcje Zamówienia:</h4>
-    <select id="delivery-option" onchange="toggleAddressField()">
-        <option value="in-restaurant">W Restauracji</option>
-        <option value="takeaway">Na Wynos</option>
-        <option value="delivery">Na Dowóz</option>
+    <select id="delivery-option" name="orderOptions" onchange="toggleDeliveryAddress()">
+        <option value="W Restauracji">W Restauracji</option>
+        <option value="Na Wynos">Na Wynos</option>
+        <option value="Na Dowóz">Na Dowóz</option>
     </select>
 </div>
-<form method="post" th:action="@{/orders-submit}">
     <div id="delivery-address-field" style="display: none;">
         <h4>Adres dostawy:</h4>
         <label for="city">Miasto:</label>
@@ -63,8 +52,8 @@
     <div id="payment-method">
         <h4>Metoda Płatności:</h4>
         <select id="payment-method-select" name="paymentMethod">
-            <option value="card">Karta Płatnicza</option>
-            <option value="cash">Gotówka</option>
+            <option value="Karta Płatnicza">Karta Płatnicza</option>
+            <option value="Gotówka">Gotówka</option>
         </select>
     </div>
 
@@ -77,5 +66,19 @@
         <button type="submit">Złóż zamówienie</button>
     </div>
 </form>
+
+<script>
+    function toggleDeliveryAddress() {
+        var deliveryOption = document.getElementById("delivery-option").value;
+        var deliveryAddressField = document.getElementById("delivery-address-field");
+
+        if (deliveryOption === "Na Dowóz") {
+            deliveryAddressField.style.display = "block";
+        } else {
+            deliveryAddressField.style.display = "none";
+        }
+    }
+</script>
+
 </body>
 </html>

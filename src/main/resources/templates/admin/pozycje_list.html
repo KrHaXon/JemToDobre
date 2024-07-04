@@ -16,8 +16,16 @@
             </div>
             <p class="description" th:text="${pozycja.Opis}">Opis</p>
             <p class="price" th:text="${pozycja.Cena} + ' zł'">Cena</p>
-            <p class="ingredients" th:text="${pozycja.Skladniki}">Skladniki</p>
-            <p class="allergen" th:text="${pozycja.alergen.nazwa_Alergenu}">Nazwa Alergenu</p>
+            <p class="ingredients" th:text="${pozycja.Skladniki}">Składniki</p>
+
+            <!-- Dodanie sekcji wyświetlania alergenów -->
+            <div class="allergens">
+                <p>Alergeny:</p>
+                <ul>
+                    <li th:each="alergen : ${pozycja.alergeny}" th:text="${alergen.nazwa_Alergenu}">Alergen</li>
+                </ul>
+            </div>
+
             <div class="actions">
                 <a class="edit-button" th:href="@{/admin/pozycja/edit/{id}(id=${pozycja.ID_Pozycja_Menu})}">Edytuj</a>
                 <a class="delete-button" th:href="@{/admin/pozycja/delete/{id}(id=${pozycja.ID_Pozycja_Menu})}">Usuń</a>

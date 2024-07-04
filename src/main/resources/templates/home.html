@@ -24,10 +24,17 @@
         <a th:href="@{menu2}">Zamów teraz</a>
     </div>
     <div class="nav-right">
-        <div class="login-register" id="loginRegisterLinks">
+        <div class="nav-links nav-right login-register" id="loginRegisterLinks">
             <a th:if="${isLoggedIn}" href="logout">Wyloguj</a>
             <a th:unless="${isLoggedIn}" href="login">Zaloguj</a>
             <a th:unless="${isLoggedIn}" href="register">Zarejestruj</a>
+            <div th:if="${isLoggedIn}" class="dropdown">
+                <button class="dropbtn"><span style="font-family: 'Courier New', monospace; font-size: 1.2em;">Profil</span> <i class="fas fa-user" style="padding-left: 13px; font-size: 1.2em;"></i></button>
+                <div class="dropdown-content">
+                    <a href="/user/profile">Mój Profil</a>
+                    <a href="/user/edit">Edytuj Informacje</a>
+                </div>
+            </div>
         </div>
         <div class="cart-icon">
             <a href="/cart"><i class="fas fa-shopping-cart"></i></a>

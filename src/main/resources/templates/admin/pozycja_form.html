@@ -32,15 +32,15 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="alergen">Alergen:</label>
-            <select id="alergen" th:value="${ID_Alergen}" name="alergen">
+            <label for="alergeny">Alergeny:</label>
+            <select id="alergeny" name="alergeny" multiple>
                 <option th:each="alergen : ${alergeny}" th:value="${alergen.ID_Alergen}" th:text="${alergen.Nazwa_Alergenu}"></option>
             </select>
         </div>
         <div class="form-group">
             <label for="zdjecie">Zdjęcie:</label>
-            <input type="file" name="zdjecie" id="zdjecie" accept=".jpg, .jpeg, .png" th:value="${Zdjecie}">
-            <label for="zdjecie" class="custom-file-label">Wybierz plik</label>
+            <input type="file" name="zdjecie" id="zdjecie" accept=".jpg, .jpeg, .png" />
+            <label for="zdjecie" class="custom-file-label" th:text="${pozycja.imageData != null ? 'Zmień plik' : 'Wybierz plik'}"></label>
         </div>
         <button type="submit">Zapisz</button>
         <button type="button" onclick="window.location.href='/admin/pozycje'">Anuluj</button>

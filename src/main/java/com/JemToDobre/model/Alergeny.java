@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +25,9 @@ public class Alergeny {
     private String Opis_Alergenu;
     private String Typ_Alergenu;
     private String Zrodlo_Alergenu;
+
+    @OneToMany(mappedBy = "alergen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pozycje_Menu_Alergeny> pozycjeMenuAlergeny = new ArrayList<>();
 
     public Alergeny( String Nazwa_Alergenu,String Opis_Alergenu, String Typ_Alergenu, String Zrodlo_Alergenu  )
     {

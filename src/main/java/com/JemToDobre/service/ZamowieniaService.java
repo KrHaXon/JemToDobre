@@ -26,7 +26,7 @@ public class ZamowieniaService {
 
     public void addItemToOrder(Zamowienia zamowienie, Pozycje_Zamowienia pozycjaZamowienia) {
         zamowienie.addPozycjaZamowienia(pozycjaZamowienia);
-        zamowienie.setLacznaCena(zamowienie.getLacznaCena() + pozycjaZamowienia.getCena() * pozycjaZamowienia.getIlosc());
+        zamowienie.setLacznaCena(zamowienie.getLacznaCena() + pozycjaZamowienia.getCena());
         zamowieniaRepository.save(zamowienie);
     }
 }

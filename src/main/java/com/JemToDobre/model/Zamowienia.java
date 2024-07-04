@@ -27,13 +27,15 @@ public class Zamowienia {
     private String Nr_Faktury;
     private LocalDateTime Data_Realizacji;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ID_Zamowienia")
+    @OneToMany(mappedBy = "zamowienia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pozycje_Zamowienia> pozycjeZamowienia;
 
     private Double lacznaCena;
+    private String Opcje_Zamówienia;
+    private String Metoda_Płatności;
 
     public void addPozycjaZamowienia(Pozycje_Zamowienia pozycjaZamowienia) {
+        pozycjaZamowienia.setZamowienia(this);
         this.pozycjeZamowienia.add(pozycjaZamowienia);
     }
 
@@ -45,7 +47,7 @@ public class Zamowienia {
         return lacznaCena;
     }
 
-    public Zamowienia(Integer ID_Uzytkownik, Integer ID_Adres, LocalDateTime data_Zamowienia, String status_Zamowienia, String dodatkowe_Informacje, String nr_Faktury, LocalDateTime data_Realizacji, List<Pozycje_Zamowienia> pozycjeZamowienia, Double lacznaCena) {
+    public Zamowienia(Integer ID_Uzytkownik, Integer ID_Adres, LocalDateTime data_Zamowienia, String status_Zamowienia, String dodatkowe_Informacje, String nr_Faktury, LocalDateTime data_Realizacji, List<Pozycje_Zamowienia> pozycjeZamowienia, Double lacznaCena, String opcje_Zamówienia, String metoda_Płatności) {
         this.ID_Uzytkownik = ID_Uzytkownik;
         this.ID_Adres = ID_Adres;
         this.Data_Zamowienia = data_Zamowienia;
@@ -55,6 +57,8 @@ public class Zamowienia {
         this.Data_Realizacji = data_Realizacji;
         this.pozycjeZamowienia = pozycjeZamowienia;
         this.lacznaCena = lacznaCena;
+        this.Opcje_Zamówienia = opcje_Zamówienia;
+        this.Metoda_Płatności = metoda_Płatności;
     }
     public Zamowienia()
     {

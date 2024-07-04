@@ -1,9 +1,6 @@
 package com.JemToDobre.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +15,17 @@ public class Pozycje_Zamowienia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID_Pozycja_Zamowienia;
-    private Integer ID_Zamowienia;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_Zamowienia", nullable = false)
+    private Zamowienia zamowienia;
+
     private Integer ID_Pozycji;
-    private Integer Ilosc;
     private Double Cena;
 
-    public Pozycje_Zamowienia(Integer ID_Zamowienia, Integer ID_Pozycji, Integer ilosc, Double cena) {
-        this.ID_Zamowienia = ID_Zamowienia;
+    public Pozycje_Zamowienia(Zamowienia zamowienia, Integer ID_Pozycji, Double cena) {
+        this.zamowienia = zamowienia;
         this.ID_Pozycji = ID_Pozycji;
-        this.Ilosc = ilosc;
         this.Cena = cena;
     }
 }

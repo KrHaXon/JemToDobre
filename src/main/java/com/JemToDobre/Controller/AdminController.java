@@ -4,22 +4,27 @@ import com.JemToDobre.Util.ImageUtils;
 import com.JemToDobre.model.Alergeny;
 import com.JemToDobre.model.Kategoria_Menu;
 import com.JemToDobre.model.Pozycje_Menu;
+import com.JemToDobre.model.Pozycje_Menu_Alergeny;
 import com.JemToDobre.repository.AlergenRepository;
 import com.JemToDobre.repository.KategoriaMenuRepository;
 import com.JemToDobre.repository.PozycjeMenuRepository;
 import com.JemToDobre.service.AlergenService;
 import com.JemToDobre.service.KategoriaMenuService;
+import com.JemToDobre.service.PozycjeMenuAlergenyService;
 import com.JemToDobre.service.PozycjeMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -33,6 +38,9 @@ public class AdminController {
 
     @Autowired
     private PozycjeMenuService pozycjeMenuService;
+
+    @Autowired
+    private PozycjeMenuAlergenyService pozycjeMenuAlergenyService;
 
     private final AlergenRepository alergenRepository;
     private final PozycjeMenuRepository pozycjeMenuRepository;
@@ -145,8 +153,16 @@ public class AdminController {
 
     // Pozycje Menu
     @GetMapping("/pozycje")
-    public String listPozycje(Model model) {
-        model.addAttribute("pozycje", pozycjeMenuService.findAll());
+    public String getAllPozycje(Model model) {
+        List<Pozycje_Menu> pozycje = pozycjeMenuService.findAll();
+
+        // Dodaj alergeny do każdej pozycji menu
+        for (Pozycje_Menu pozycja : pozycje) {
+            List<Pozycje_Menu_Alergeny> alergeny = pozycjeMenuAlergenyService.findByPozycjaMenu(pozycja);
+            pozycja.setAlergeny(alergeny.stream().map(Pozycje_Menu_Alergeny::getAlergen).collect(Collectors.toList()));
+        }
+
+        model.addAttribute("pozycje", pozycje);
         return "admin/pozycje_list";
     }
 
@@ -164,71 +180,67 @@ public class AdminController {
                               @RequestParam("cena") Double cena,
                               @RequestParam("skladniki") String skladniki,
                               @RequestParam("kategoria") Integer kategoriaId,
-                              @RequestParam("alergen") Integer alergenId,
-                              @RequestParam("zdjecie") MultipartFile zdjecie,
-                              Model model) throws IOException {
+                              @RequestParam("alergeny") List<Integer> alergenyIds,
+                              @RequestParam("zdjecie") MultipartFile zdjecie) throws IOException {
 
         Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
-        Optional<Alergeny> optionalAlergen = alergenService.findById(alergenId);
-        Alergeny alergen = optionalAlergen.orElse(null);
-        model.addAttribute("Nazwa_Pozycji", nazwa);
-        model.addAttribute("Opis", opis);
-        model.addAttribute("Cena", cena);
-        model.addAttribute("Skladniki", skladniki);
-        model.addAttribute("Kategoria", kategoria);
-        model.addAttribute("Alergen", alergen);
-        model.addAttribute("Zdjecie", zdjecie);
+        List<Alergeny> alergeny = alergenService.findAllById(alergenyIds);
 
-        Pozycje_Menu pozycja = new Pozycje_Menu(nazwa, opis, cena, skladniki, kategoria, alergen, Base64.getEncoder().encodeToString(zdjecie.getBytes()));
-        pozycjeMenuRepository.save(pozycja);
+        Pozycje_Menu pozycja = new Pozycje_Menu(nazwa, opis, cena, skladniki, kategoria, Base64.getEncoder().encodeToString(zdjecie.getBytes()));
+        pozycjeMenuService.save(pozycja);
 
-        //System.out.println(pozycja);
+        for (Alergeny alergen : alergeny) {
+            Pozycje_Menu_Alergeny pozycjeMenuAlergeny = new Pozycje_Menu_Alergeny();
+            pozycjeMenuAlergeny.setPozycjaMenu(pozycja);
+            pozycjeMenuAlergeny.setAlergen(alergen);
+            pozycjeMenuAlergenyService.save(pozycjeMenuAlergeny);
+        }
+
         return "redirect:/admin/pozycje";
-
     }
 
     @GetMapping("/pozycja/edit/{id}")
     public String editPozycja(@PathVariable Integer id, Model model) {
-        Optional<Pozycje_Menu> pozycja = Optional.ofNullable(pozycjeMenuService.findById(id));
-        if (pozycja.isPresent()) {
-            model.addAttribute("pozycja", pozycja.get());
+        Pozycje_Menu pozycja = pozycjeMenuService.findById(id);
+        if (pozycja != null) {
+            model.addAttribute("pozycja", pozycja);
             model.addAttribute("kategorie", kategoriaMenuService.findAll());
-            model.addAttribute("alergeny", alergenService.findAll());
-            return "admin/pozycja_form";
+
+            // Pobierz listę wszystkich alergenów
+            List<Alergeny> wszystkieAlergeny = alergenService.findAll();
+
+            // Pobierz listę alergenów przypisanych do pozycji menu
+            List<Alergeny> alergenyPozycji = pozycjeMenuAlergenyService.findAlergenyByPozycjaMenu(pozycja);
+
+            // Przekazuj obiekt z listą wszystkich alergenów i listą alergenów przypisanych do pozycji do widoku
+            model.addAttribute("wszystkieAlergeny", wszystkieAlergeny);
+            model.addAttribute("alergenyPozycji", alergenyPozycji);
+
+            return "admin/pozycja_edit_form";
         } else {
             return "redirect:/admin/pozycje";
         }
     }
 
     @PostMapping("/pozycja/edit")
-    public String processEditPozycja(@RequestParam("id") Integer id,
-                                     @RequestParam("nazwa") String nazwa,
-                                     @RequestParam("opis") String opis,
-                                     @RequestParam("cena") Double cena,
-                                     @RequestParam("skladniki") String skladniki,
+    public String processEditPozycja(@ModelAttribute("pozycja") Pozycje_Menu pozycja,
                                      @RequestParam("kategoria") Integer kategoriaId,
-                                     @RequestParam("alergen") Integer alergenId,
-                                     @RequestParam("zdjecie") MultipartFile zdjecie,
-                                     Model model) throws IOException {
-        Pozycje_Menu pozycja = pozycjeMenuService.findById(id);
-        if (pozycja != null) {
-            pozycja.setNazwa_Pozycji(nazwa);
-            pozycja.setOpis(opis);
-            pozycja.setCena(cena);
-            pozycja.setSkladniki(skladniki);
+                                     @RequestParam("alergeny") List<Integer> alergenyIds,
+                                     @RequestParam("zdjecie") MultipartFile zdjecie) throws IOException {
 
-            Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
-            pozycja.setKategoria(kategoria);
+        Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
+        pozycja.setKategoria(kategoria);
 
-            Alergeny alergen = alergenService.findById(alergenId).orElse(null);
-            pozycja.setAlergen(alergen);
-
-            if (!zdjecie.isEmpty()) {
-                pozycja.setImageData(Base64.getEncoder().encodeToString(zdjecie.getBytes()));
-            }
-
-            pozycjeMenuService.save(pozycja);
+        // Zapisz zdjęcie, jeśli zostało przesłane
+        if (!zdjecie.isEmpty()) {
+            pozycja.setImageData(Base64.getEncoder().encodeToString(zdjecie.getBytes()));
         }
+
+        // Przetwórz alergeny
+        List<Alergeny> alergeny = alergenService.findAllById(alergenyIds);
+        pozycja.setAlergeny(alergeny);
+
+        pozycjeMenuService.save(pozycja);
 
         return "redirect:/admin/pozycje";
     }

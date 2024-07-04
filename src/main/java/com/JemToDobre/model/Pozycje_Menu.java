@@ -26,24 +26,35 @@ public class Pozycje_Menu {
     private String Opis;
     private Double Cena;
     private String Skladniki;
+
     @Lob
     @Column(name = "imagedata", columnDefinition = "LONGBLOB")
     private String imageData;
+
     @ManyToOne
     @JoinColumn(name = "ID_Kategoria", referencedColumnName = "ID_Kategoria")
     private Kategoria_Menu kategoria;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_Alergen", referencedColumnName = "ID_Alergen")
-    private Alergeny alergen;
+    @OneToMany(mappedBy = "pozycjaMenu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pozycje_Menu_Alergeny> pozycjeMenuAlergeny = new ArrayList<>();
 
-    public Pozycje_Menu(String nazwa, String opis, Double cena, String skladniki, Kategoria_Menu kategoria, Alergeny alergen, String file) throws IOException {
+    @Transient
+    private List<Alergeny> alergeny;
+
+    public List<Alergeny> getAlergeny() {
+        return alergeny;
+    }
+
+    public void setAlergeny(List<Alergeny> alergeny) {
+        this.alergeny = alergeny;
+    }
+
+    public Pozycje_Menu(String nazwa, String opis, Double cena, String skladniki, Kategoria_Menu kategoria, String file) throws IOException {
         this.Nazwa_Pozycji = nazwa;
         this.Opis = opis;
         this.Cena = cena;
         this.Skladniki = skladniki;
         this.kategoria = kategoria;
-        this.alergen = alergen;
         this.imageData = file;
     }
 
@@ -52,7 +63,6 @@ public class Pozycje_Menu {
         return "Pozycje_Menu{" +
                 "ID_Pozycja_Menu=" + ID_Pozycja_Menu +
                 ", kategoria=" + kategoria.getNazwa_Kategorii() +
-                ", alergen=" + alergen.getNazwa_Alergenu() +
                 ", Nazwa_Pozycji='" + Nazwa_Pozycji + '\'' +
                 ", Opis='" + Opis + '\'' +
                 ", Cena=" + Cena +

@@ -23,6 +23,7 @@ public class CartController {
     private PozycjeMenuService pozycjeMenuService;
     @Autowired
     private PozycjeZamowieniaRepository pozycjeZamowieniaRepository;
+
     List<Pozycje_Menu> cart = new ArrayList<>();
     @GetMapping("/menu")
     public String menu(Model model) {
@@ -49,7 +50,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cart(Model model, HttpSession session) {
-        cart = (List<Pozycje_Menu>) session.getAttribute("cart");
+        List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
         }
@@ -63,16 +64,11 @@ public class CartController {
     @PostMapping("/cart/add/{id}")
     public String addToCart(@PathVariable Integer id, HttpSession session) {
         Pozycje_Menu item = pozycjeMenuService.findById(id);
-        cart = (List<Pozycje_Menu>) session.getAttribute("cart");
+        List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
         }
         cart.add(item);
-        Pozycje_Zamowienia pozycjaZamowienia = new Pozycje_Zamowienia();
-        pozycjaZamowienia.setID_Pozycji(item.getID_Pozycja_Menu());
-        pozycjaZamowienia.setIlosc(cart.size());
-        pozycjaZamowienia.setCena(item.getCena());
-        pozycjeZamowieniaRepository.save(pozycjaZamowienia);
         session.setAttribute("cart", cart);
         return "redirect:/menu2";
     }

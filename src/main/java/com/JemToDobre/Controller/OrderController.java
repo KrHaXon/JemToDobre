@@ -3,11 +3,8 @@ package com.JemToDobre.Controller;
 import com.JemToDobre.model.*;
 import com.JemToDobre.repository.AdresRepository;
 import com.JemToDobre.repository.PozycjeZamowieniaRepository;
-import com.JemToDobre.repository.UzytkownicyRepository;
 import com.JemToDobre.repository.ZamowieniaRepository;
-import com.JemToDobre.resources.EmailMessage;
 import com.JemToDobre.service.EmailSenderService;
-import com.JemToDobre.service.PozycjeMenuService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,20 +43,38 @@ public class OrderController {
         return "orders";
     }
 
-    @PostMapping("/orders-submit")
-    public String accept(Model model, HttpSession session,
-                         @RequestParam("city") String city,
-                         @RequestParam("street") String street,
-                         @RequestParam("house-number") Integer houseNumber,
-                         @RequestParam("apartment-number") String apartmentNumberStr,
-                         @RequestParam("postal-code") String postalCode,
-                         @RequestParam("orderComments") String orderComments,
-                         @RequestParam("orderOptions") String orderOptions,
-                         @RequestParam("paymentMethod") String paymentMethod){
-        model.addAttribute("fr_city", city);
-        model.addAttribute("fr_street", street);
-        model.addAttribute("fr_house-number", houseNumber);
+    @PostMapping("/orders-restaurant")
+    public String submitRestaurantOrder(@RequestParam("orderComments") String orderComments,
+                                        @RequestParam("orderOptions") String orderOptions,
+                                        @RequestParam("paymentMethod") String paymentMethod,
+                                        HttpSession session) {
+        System.out.println("HEEEEEJ");
+        return processOrder(null, null, null, null, null, orderComments, orderOptions, paymentMethod, session);
+    }
 
+    @PostMapping("/orders-takeaway")
+    public String submitTakeawayOrder(@RequestParam("orderComments") String orderComments,
+                                      @RequestParam("orderOptions") String orderOptions,
+                                      @RequestParam("paymentMethod") String paymentMethod,
+                                      HttpSession session) {
+        return processOrder(null, null, null, null, null, orderComments, orderOptions, paymentMethod, session);
+    }
+
+    @PostMapping("/orders-delivery")
+    public String submitDeliveryOrder(@RequestParam("city") String city,
+                                      @RequestParam("street") String street,
+                                      @RequestParam("house-number") Integer houseNumber,
+                                      @RequestParam(value = "apartment-number", required = false) String apartmentNumberStr,
+                                      @RequestParam("postal-code") String postalCode,
+                                      @RequestParam("orderComments") String orderComments,
+                                      @RequestParam("orderOptions") String orderOptions,
+                                      @RequestParam("paymentMethod") String paymentMethod,
+                                      HttpSession session) {
+        return processOrder(city, street, houseNumber, apartmentNumberStr, postalCode, orderComments, orderOptions, paymentMethod, session);
+    }
+
+    private String processOrder(String city, String street, Integer houseNumber, String apartmentNumberStr, String postalCode,
+                                String orderComments, String orderOptions, String paymentMethod, HttpSession session) {
         Integer actualApartmentNumber = null;
         if (apartmentNumberStr != null && !apartmentNumberStr.isEmpty()) {
             try {
@@ -68,20 +83,20 @@ public class OrderController {
                 // Obsłuż błąd konwersji numeru mieszkania
             }
         }
-        model.addAttribute("fr_apartment-number", actualApartmentNumber);
-        model.addAttribute("fr_postal-code", postalCode);
 
-        Adres adres = new Adres(street, houseNumber, actualApartmentNumber, city, postalCode);
-        adresRepository.save(adres);
+        Adres adres = null;
+        if (orderOptions.equals("Na Dowóz")) {
+            adres = new Adres(street, houseNumber, actualApartmentNumber, city, postalCode);
+            adresRepository.save(adres);
+        }
 
         Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
-        Integer temp = (user == null) ? null : user.getID_Uzytkownik();
+        Integer userId = (user == null) ? null : user.getID_Uzytkownik();
 
         LocalDateTime currentDateTime = LocalDateTime.now();
         String status = "W trakcie";
-        String dodatkoweInformacje = orderComments;
         String numerFaktury = String.format("%06d", new Random().nextInt(1000000));
-        LocalDateTime currentplustree = LocalDateTime.now();
+        LocalDateTime deliveryTime = LocalDateTime.now();
 
         List<Pozycje_Menu> cart = (List<Pozycje_Menu>) session.getAttribute("cart");
         if (cart == null) {
@@ -90,7 +105,7 @@ public class OrderController {
 
         double totalPrice = (double) session.getAttribute("totalPrice");
 
-        Zamowienia zamowienie = new Zamowienia(temp, adres.getID_Adres(), currentDateTime, status, dodatkoweInformacje, numerFaktury, currentplustree, new ArrayList<>(), totalPrice, orderOptions, paymentMethod);
+        Zamowienia zamowienie = new Zamowienia(userId, (adres != null) ? adres.getID_Adres() : null, currentDateTime, status, orderComments, numerFaktury, deliveryTime, new ArrayList<>(), totalPrice, orderOptions, paymentMethod);
         zamowieniaRepository.save(zamowienie);
 
         for (Pozycje_Menu pozycjaMenu : cart) {
@@ -102,8 +117,8 @@ public class OrderController {
         zamowieniaRepository.save(zamowienie);
         session.removeAttribute("cart"); // Usunięcie koszyka z sesji po złożeniu zamówienia
 
-        EmailMessage emailMessage = new EmailMessage("haftor2003@gmail.com", "Zamówienie", "Dziękujemy za zamówienie, zapraszamy ponownie!");
-        emailSenderService.sendEmail(emailMessage.getTo(), emailMessage.getSubject(), emailMessage.getMessage());
+       /* EmailMessage emailMessage = new EmailMessage("haftor2003@gmail.com", "Zamówienie", "Dziękujemy za zamówienie, zapraszamy ponownie!");
+        emailSenderService.sendEmail(emailMessage.getTo(), emailMessage.getSubject(), emailMessage.getMessage());*/
 
         return "redirect:/";
     }

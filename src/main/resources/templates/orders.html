@@ -17,31 +17,31 @@
         </div>
     </div>
 </div>
-<form method="post" th:action="@{/orders-submit}">
-<div id="order-type">
-    <h4>Opcje Zamówienia:</h4>
-    <select id="delivery-option" name="orderOptions" onchange="toggleDeliveryAddress()">
-        <option value="W Restauracji">W Restauracji</option>
-        <option value="Na Wynos">Na Wynos</option>
-        <option value="Na Dowóz">Na Dowóz</option>
-    </select>
-</div>
+<form id="order-form" method="post" th:action="@{/orders-restaurant}">
+    <div id="order-type">
+        <h4>Opcje Zamówienia:</h4>
+        <select id="delivery-option" name="orderOptions" onchange="toggleDeliveryAddress()">
+            <option value="W Restauracji">W Restauracji</option>
+            <option value="Na Wynos">Na Wynos</option>
+            <option value="Na Dowóz">Na Dowóz</option>
+        </select>
+    </div>
     <div id="delivery-address-field" style="display: none;">
         <h4>Adres dostawy:</h4>
         <label for="city">Miasto:</label>
-        <input type="text" id="city" name="city" th:value="${session['fr_city']}" required placeholder="Podaj miasto">
+        <input type="text" id="city" name="city" th:value="${session['fr_city']}" placeholder="Podaj miasto">
 
         <label for="street">Ulica:</label>
-        <input type="text" id="street" name="street" th:value="${session['fr_street']}" required placeholder="Podaj ulicę">
+        <input type="text" id="street" name="street" th:value="${session['fr_street']}" placeholder="Podaj ulicę">
 
         <label for="house-number">Numer Domu:</label>
-        <input type="number" id="house-number" name="house-number" th:value="${session['fr_house-number']}" required placeholder="Podaj numer domu">
+        <input type="number" id="house-number" name="house-number" th:value="${session['fr_house-number']}" placeholder="Podaj numer domu">
 
         <label for="apartment-number">Numer Mieszkania:</label>
         <input type="number" id="apartment-number" name="apartment-number" th:value="${session['fr_apartment-number']}" placeholder="Podaj numer mieszkania">
 
         <label for="postal-code">Kod Pocztowy:</label>
-        <input type="text" id="postal-code" name="postal-code" th:value="${session['fr_postal-code']}" required placeholder="Podaj kod pocztowy">
+        <input type="text" id="postal-code" name="postal-code" th:value="${session['fr_postal-code']}" placeholder="Podaj kod pocztowy">
     </div>
 
     <div id="order-comments">
@@ -71,13 +71,24 @@
     function toggleDeliveryAddress() {
         var deliveryOption = document.getElementById("delivery-option").value;
         var deliveryAddressField = document.getElementById("delivery-address-field");
+        var form = document.getElementById("order-form");
 
         if (deliveryOption === "Na Dowóz") {
             deliveryAddressField.style.display = "block";
+            form.action = "/orders-delivery";
         } else {
             deliveryAddressField.style.display = "none";
+            if (deliveryOption === "W Restauracji") {
+                form.action = "/orders-restaurant";
+            } else if (deliveryOption === "Na Wynos") {
+                form.action = "/orders-takeaway";
+            }
         }
     }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleDeliveryAddress();
+    });
 </script>
 
 </body>

@@ -4,7 +4,9 @@ import com.JemToDobre.model.*;
 import com.JemToDobre.repository.AdresRepository;
 import com.JemToDobre.repository.PozycjeZamowieniaRepository;
 import com.JemToDobre.repository.ZamowieniaRepository;
+import com.JemToDobre.resources.EmailMessage;
 import com.JemToDobre.service.EmailSenderService;
+import com.JemToDobre.service.PozycjeMenuService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,8 @@ public class OrderController {
     private PozycjeZamowieniaRepository pozycjeZamowieniaRepository;
     @Autowired
     private EmailSenderService emailSenderService;
+    @Autowired
+    PozycjeMenuService pozycjeMenuService;
 
     @GetMapping("/orders")
     public String showOrders(Model model, HttpSession session) {
@@ -103,7 +107,14 @@ public class OrderController {
             return "error";
         }
 
-        double totalPrice = (double) session.getAttribute("totalPrice");
+        double basePrice = (double) session.getAttribute("totalPrice");
+        double additionalFee = 0;
+        if (orderOptions.equals("Na Dowóz")) {
+            additionalFee = 20;
+        } else if (orderOptions.equals("Na Wynos")) {
+            additionalFee = 5;
+        }
+        double totalPrice = basePrice + additionalFee;
 
         Zamowienia zamowienie = new Zamowienia(userId, (adres != null) ? adres.getID_Adres() : null, currentDateTime, status, orderComments, numerFaktury, deliveryTime, new ArrayList<>(), totalPrice, orderOptions, paymentMethod);
         zamowieniaRepository.save(zamowienie);
@@ -115,11 +126,30 @@ public class OrderController {
         }
 
         zamowieniaRepository.save(zamowienie);
-        session.removeAttribute("cart"); // Usunięcie koszyka z sesji po złożeniu zamówienia
+        session.removeAttribute("cart");
 
-       /* EmailMessage emailMessage = new EmailMessage("haftor2003@gmail.com", "Zamówienie", "Dziękujemy za zamówienie, zapraszamy ponownie!");
-        emailSenderService.sendEmail(emailMessage.getTo(), emailMessage.getSubject(), emailMessage.getMessage());*/
+        String emailContent = generateEmailContent(cart, totalPrice, additionalFee);
+
+        EmailMessage emailMessage = new EmailMessage(user.getEmail(), "Potwierdzenie Zamówienia", emailContent);
+        emailSenderService.sendEmail(emailMessage.getTo(), emailMessage.getSubject(), emailMessage.getMessage());
 
         return "redirect:/";
     }
+
+    private String generateEmailContent(List<Pozycje_Menu> cart, double totalPrice, double additionalFee) {
+        StringBuilder emailContent = new StringBuilder();
+        emailContent.append("Dziękujemy za złożenie zamówienia!\n\n");
+        emailContent.append("Twoje zamówienie:\n");
+
+        for (Pozycje_Menu item : cart) {
+            emailContent.append("- ").append(item.getNazwa_Pozycji()).append(": ").append(item.getCena()).append(" PLN\n");
+        }
+
+        emailContent.append("\nOpłata dodatkowa: ").append(additionalFee).append(" PLN\n");
+        emailContent.append("Łączna cena: ").append(totalPrice).append(" PLN\n\n");
+        emailContent.append("Dziękujemy za zamówienie, zapraszamy ponownie!");
+
+        return emailContent.toString();
+    }
+
 }

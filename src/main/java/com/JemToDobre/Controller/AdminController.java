@@ -1,10 +1,8 @@
 package com.JemToDobre.Controller;
 
 import com.JemToDobre.Util.ImageUtils;
-import com.JemToDobre.model.Alergeny;
-import com.JemToDobre.model.Kategoria_Menu;
-import com.JemToDobre.model.Pozycje_Menu;
-import com.JemToDobre.model.Pozycje_Menu_Alergeny;
+import com.JemToDobre.model.*;
+import com.JemToDobre.model.toenum.RodzajUzytkownika;
 import com.JemToDobre.repository.AlergenRepository;
 import com.JemToDobre.repository.KategoriaMenuRepository;
 import com.JemToDobre.repository.PozycjeMenuRepository;
@@ -12,6 +10,7 @@ import com.JemToDobre.service.AlergenService;
 import com.JemToDobre.service.KategoriaMenuService;
 import com.JemToDobre.service.PozycjeMenuAlergenyService;
 import com.JemToDobre.service.PozycjeMenuService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,13 +54,21 @@ public class AdminController {
 
     // Alergeny
     @GetMapping("/alergeny")
-    public String listAlergeny(Model model) {
+    public String listAlergeny(Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         model.addAttribute("alergeny", alergenService.findAll());
         return "admin/alergen_list";
     }
 
     @GetMapping("/alergen/new")
-    public String newAlergen(Model model) {
+    public String newAlergen(Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         model.addAttribute("alergen", new Alergeny());
         return "admin/alergen_form";
     }
@@ -71,7 +78,11 @@ public class AdminController {
                               @RequestParam("opis") String opis,
                               @RequestParam("typ") String typ,
                               @RequestParam("zrodlo") String zrodlo,
-                              Model model) {
+                              Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         model.addAttribute("Nazwa_Alergenu", nazwa);
         model.addAttribute("Opis_Alergenu", opis);
         model.addAttribute("Typ_Alergenu", typ);
@@ -83,7 +94,11 @@ public class AdminController {
     }
 
     @GetMapping("/alergen/edit/{id}")
-    public String editAlergen(@PathVariable Integer id, Model model) {
+    public String editAlergen(@PathVariable Integer id, Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         Optional<Alergeny> alergen = alergenService.findById(id);
         if (alergen.isPresent()) {
             model.addAttribute("alergen", alergen.get());
@@ -95,32 +110,52 @@ public class AdminController {
 
     // Metoda do obsługi edycji alergenu po przesłaniu formularza
     @PostMapping("/alergen/edit")
-    public String processEditAlergen(@ModelAttribute Alergeny alergen) {
+    public String processEditAlergen(@ModelAttribute Alergeny alergen, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         alergenService.save(alergen);
         return "redirect:/admin/alergeny"; // Przekierowanie na listę alergenów po zapisie
     }
 
     @GetMapping("/alergen/delete/{id}")
-    public String deleteAlergen(@PathVariable Integer id) {
+    public String deleteAlergen(@PathVariable Integer id, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         alergenService.deleteById(id);
         return "redirect:/admin/alergeny";
     }
 
     // Kategorie
     @GetMapping("/kategorie")
-    public String listKategorie(Model model) {
+    public String listKategorie(Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         model.addAttribute("kategorie", kategoriaMenuService.findAll());
         return "admin/kategoria_list";
     }
 
     @GetMapping("/kategoria/new")
-    public String newKategoria(Model model) {
+    public String newKategoria(Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         model.addAttribute("kategoria", new Kategoria_Menu());
         return "admin/kategoria_form";
     }
 
     @PostMapping("/kategoria")
-    public String saveKategoria(@RequestParam("nazwa") String nazwa, Model model) {
+    public String saveKategoria(@RequestParam("nazwa") String nazwa, Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         Kategoria_Menu kategoria = new Kategoria_Menu();
         kategoria.setNazwa_Kategorii(nazwa);
         kategoriaMenuService.save(kategoria);
@@ -128,7 +163,11 @@ public class AdminController {
     }
 
     @GetMapping("/kategoria/edit/{id}")
-    public String editKategoria(@PathVariable Integer id, Model model) {
+    public String editKategoria(@PathVariable Integer id, Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         Optional<Kategoria_Menu> kategoria = Optional.ofNullable(kategoriaMenuService.findById(id));
         if (kategoria.isPresent()) {
             model.addAttribute("kategoria", kategoria.get());
@@ -140,20 +179,32 @@ public class AdminController {
 
     // Metoda do obsługi edycji kategorii po przesłaniu formularza
     @PostMapping("/kategoria/edit")
-    public String processEditKategoria(@ModelAttribute Kategoria_Menu kategoria) {
+    public String processEditKategoria(@ModelAttribute Kategoria_Menu kategoria, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         kategoriaMenuService.save(kategoria);
         return "redirect:/admin/kategorie"; // Przekierowanie na listę kategorii po zapisie
     }
 
     @GetMapping("/kategoria/delete/{id}")
-    public String deleteKategoria(@PathVariable Integer id) {
+    public String deleteKategoria(@PathVariable Integer id, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         kategoriaMenuService.deleteById(id);
         return "redirect:/admin/kategorie";
     }
 
     // Pozycje Menu
     @GetMapping("/pozycje")
-    public String getAllPozycje(Model model) {
+    public String getAllPozycje(Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         List<Pozycje_Menu> pozycje = pozycjeMenuService.findAll();
 
         // Dodaj alergeny do każdej pozycji menu
@@ -167,7 +218,11 @@ public class AdminController {
     }
 
     @GetMapping("/pozycja/new")
-    public String newPozycja(Model model) {
+    public String newPozycja(Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         model.addAttribute("pozycja", new Pozycje_Menu());
         model.addAttribute("kategorie", kategoriaMenuService.findAll());
         model.addAttribute("alergeny", alergenService.findAll());
@@ -181,7 +236,11 @@ public class AdminController {
                               @RequestParam("skladniki") String skladniki,
                               @RequestParam("kategoria") Integer kategoriaId,
                               @RequestParam("alergeny") List<Integer> alergenyIds,
-                              @RequestParam("zdjecie") MultipartFile zdjecie) throws IOException {
+                              @RequestParam("zdjecie") MultipartFile zdjecie, HttpSession session) throws IOException {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
 
         Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
         List<Alergeny> alergeny = alergenService.findAllById(alergenyIds);
@@ -200,7 +259,11 @@ public class AdminController {
     }
 
     @GetMapping("/pozycja/edit/{id}")
-    public String editPozycja(@PathVariable Integer id, Model model) {
+    public String editPozycja(@PathVariable Integer id, Model model, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         Pozycje_Menu pozycja = pozycjeMenuService.findById(id);
         if (pozycja != null) {
             model.addAttribute("pozycja", pozycja);
@@ -226,7 +289,11 @@ public class AdminController {
     public String processEditPozycja(@ModelAttribute("pozycja") Pozycje_Menu pozycja,
                                      @RequestParam("kategoria") Integer kategoriaId,
                                      @RequestParam("alergeny") List<Integer> alergenyIds,
-                                     @RequestParam("zdjecie") MultipartFile zdjecie) throws IOException {
+                                     @RequestParam("zdjecie") MultipartFile zdjecie, HttpSession session) throws IOException {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
 
         Kategoria_Menu kategoria = kategoriaMenuService.findById(kategoriaId);
         pozycja.setKategoria(kategoria);
@@ -246,8 +313,13 @@ public class AdminController {
     }
 
     @GetMapping("/pozycja/delete/{id}")
-    public String deletePozycja(@PathVariable Integer id) {
+    public String deletePozycja(@PathVariable Integer id, HttpSession session) {
+        Uzytkownicy user = (Uzytkownicy) session.getAttribute("loggedInUser");
+        if (user.getTyp_Uzytkownika() != RodzajUzytkownika.ADMINISTRATOR) {
+            return "redirect:/";
+        }
         pozycjeMenuService.deleteById(id);
         return "redirect:/admin/pozycje";
     }
+
 }

@@ -1,0 +1,39 @@
+§1 Postanowienia Ogólne
+Niniejszy regulamin określa zasady korzystania ze strony internetowej "Jem-to-dobre" oraz warunki świadczenia usług drogą elektroniczną przez właściciela strony.
+Korzystanie ze strony oznacza akceptację niniejszego regulaminu.
+Właścicielem i administratorem strony "Jem-to-dobre" jest jemtodobre.sp.z o.o, z siedzibą w Katowicach, NIP: 2137211569.
+§2 Definicje
+Użytkownik - osoba fizyczna, która korzysta ze strony "Jem-to-dobre".
+Administrator - właściciel strony "Jem-to-dobre".
+Strona - serwis internetowy dostępny pod adresem jem-todobre.pl.
+Usługi - wszelkie funkcje i możliwości dostępne na stronie, w tym składanie zamówień, rejestracja i logowanie.
+§3 Rejestracja i Konto Użytkownika
+Rejestracja na stronie "Jem-to-dobre" jest dobrowolna i bezpłatna.
+Użytkownik zobowiązany jest do podania prawdziwych danych osobowych podczas rejestracji.
+Użytkownik ponosi odpowiedzialność za utrzymanie poufności swojego hasła i za wszystkie działania, które są wykonywane przy użyciu jego konta.
+Administrator zastrzega sobie prawo do zablokowania konta użytkownika w przypadku naruszenia niniejszego regulaminu.
+§4 Składanie Zamówień
+Użytkownik może składać zamówienia na stronie zarówno jako zarejestrowany użytkownik, jak i gość.
+Składanie zamówień wymaga podania prawdziwych danych kontaktowych i adresowych.
+Zamówienia są realizowane zgodnie z opisem dostępnym na stronie w momencie składania zamówienia.
+Administrator zastrzega sobie prawo do anulowania zamówienia w przypadku braku możliwości jego realizacji.
+§5 Ochrona Danych Osobowych
+Administratorem danych osobowych użytkowników jest jemtodobre.sp.z o.o.
+Dane osobowe są przetwarzane zgodnie z obowiązującymi przepisami prawa o ochronie danych osobowych oraz polityką prywatności dostępną na stronie.
+Użytkownik ma prawo do wglądu, edycji oraz usunięcia swoich danych osobowych.
+§6 Prawa i Obowiązki Użytkownika
+Użytkownik zobowiązany jest do korzystania ze strony zgodnie z prawem oraz postanowieniami niniejszego regulaminu.
+Użytkownik nie może korzystać ze strony w sposób, który mógłby zakłócić jej funkcjonowanie lub naruszać prawa innych użytkowników.
+Użytkownik nie może dostarczać treści o charakterze bezprawnym, obraźliwym, wulgarnym, naruszającym prawa autorskie lub inne prawa osób trzecich.
+§7 Prawa i Obowiązki Administratora
+Administrator zobowiązuje się do świadczenia usług drogą elektroniczną w sposób ciągły i nieprzerwany, z wyjątkiem sytuacji wynikających z przyczyn technicznych niezależnych od Administratora.
+Administrator ma prawo do czasowego zawieszenia funkcjonowania strony w celu przeprowadzenia konserwacji, modernizacji lub usunięcia awarii.
+Administrator nie ponosi odpowiedzialności za zakłócenia w funkcjonowaniu strony spowodowane siłą wyższą, nieautoryzowanym dostępem do systemu informatycznego lub działaniami osób trzecich.
+§8 Reklamacje
+Użytkownik ma prawo do składania reklamacji dotyczących działania strony i świadczonych usług.
+Reklamacje należy składać drogą elektroniczną na adres email: jemtodobre@gmail.com.
+Administrator rozpatrzy reklamację w terminie 14 dni od jej otrzymania i poinformuje użytkownika o wyniku jej rozpatrzenia.
+§9 Postanowienia Końcowe
+Administrator zastrzega sobie prawo do zmiany niniejszego regulaminu w dowolnym czasie. Zmiany wchodzą w życie w momencie ich opublikowania na stronie.
+W sprawach nieuregulowanych niniejszym regulaminem mają zastosowanie przepisy prawa polskiego.
+Niniejszy regulamin obowiązuje od momentu jego opublikowania na stronie.

@@ -104,7 +104,6 @@
     </div>
 </section>
 
-
 <footer id="contact">
     <div class="footer-content">
         <div class="contact-info">
@@ -133,6 +132,67 @@
 <button id="back-to-top" title="Wróć na górę"><i class="fas fa-chevron-up"></i></button>
 
 <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            let offset = 80;
+            let target = document.querySelector(this.getAttribute('href'));
+            let targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+            let startingPosition = window.pageYOffset;
+            let distance = targetPosition - startingPosition - offset;
+            let duration = 800; // czas trwania animacji w milisekundach
+            let startTime = null;
+
+            function scrollToTarget(timestamp) {
+                if (!startTime) startTime = timestamp;
+                let progress = timestamp - startTime;
+                let step = Math.min(progress / duration, 1); // zapewnienie, że step będzie zawsze <= 1
+                window.scrollTo(0, startingPosition + distance * easeInOutQuad(step));
+
+                if (progress < duration) {
+                    window.requestAnimationFrame(scrollToTarget);
+                }
+            }
+
+            function easeInOutQuad(t) {
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            }
+
+            window.requestAnimationFrame(scrollToTarget);
+        });
+    });
+    let backToTopButton = document.getElementById("back-to-top");
+
+    window.onscroll = function() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            backToTopButton.classList.add("show");
+        } else {
+            backToTopButton.classList.remove("show");
+        }
+    };
+
+    backToTopButton.addEventListener('click', function() {
+        let startingPosition = window.pageYOffset;
+        let duration = 800; // czas trwania animacji w milisekundach
+        let startTime = null;
+
+        function scrollToTop(timestamp) {
+            if (!startTime) startTime = timestamp;
+            let progress = timestamp - startTime;
+            let step = Math.min(progress / duration, 1); // zapewnienie, że step będzie zawsze <= 1
+            window.scrollTo(0, startingPosition * (1 - easeInOutQuad(step)));
+
+            if (progress < duration) {
+                window.requestAnimationFrame(scrollToTop);
+            }
+        }
+
+        function easeInOutQuad(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+
+        window.requestAnimationFrame(scrollToTop);
+    });
 
     let nav = document.querySelector('nav');
     let navLinks = document.querySelector('.nav-links');

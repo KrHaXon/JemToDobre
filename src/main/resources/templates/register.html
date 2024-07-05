@@ -71,7 +71,7 @@
             <input type="number" class="form-control" id="phone" name="phone" th:value="${session['fr_phone']}" required placeholder="Telefon">
         </div>
 
-        <div class="form-group checkbox-group">
+        <div class="form-group checkbox-group" style="margin-bottom: 10px">
             <label class="toggle" style="margin-right: 8px;">
                 <input type="checkbox" id="remember-me" name="remember-me" class="toggle-checkbox">
                 <span class="toggle-slider"></span>
@@ -80,6 +80,7 @@
             <input type="checkbox" class="form-check-input" id="regulamin" name="regulamin" th:checked="${session['fr_regulamin']}">
             <label class="form-check-label" for="regulamin" style="margin-left: 0;">Akceptuję regulamin</label>
         </div>
+        <a href="/Regulamin.txt" target="_blank" style="display:block; margin-top: 8px; margin-bottom: 20px">Przeczytaj regulamin</a>
         <div class="form-group">
             <button type="submit">Zarejestruj</button>
         </div>
